@@ -10,12 +10,12 @@ function Home() {
   useEffect(() => {
     setTimeout(() => {
       setloader(false)
-    }, 400)
+    }, 800)
   })
 
   return (
     <>
-      {
+        {
           loader &&
           <div className='w-full h-[90vh] flex justify-center items-center'>
             <div className='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-100'></div>

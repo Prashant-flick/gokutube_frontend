@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FetchAllVidoes } from '../FetchfromBackend/index.js';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { FeedVideo } from './index.js'
+import { Button, FeedVideo } from './index.js'
 
 function Feed() {
   const [videos, setvideos] = useState([]);
@@ -23,7 +23,7 @@ function Feed() {
       className='bg-gray-950 w-full h-full'
     >
       <div 
-        className={`${status ? 'grid grid-cols-3 gap-4 px-5 pt-4 h-full' : 'flex justify-center items-center h-[90vh]'}`}
+        className={`${status ? 'grid grid-cols-3 gap-7 px-6 pt-4 h-full mt-3' : 'flex justify-center items-center h-[90vh]'}`}
       >
 
         {
@@ -36,14 +36,15 @@ function Feed() {
                 <div
                   className='h-full w-full'
                 >
-                <FeedVideo video={video}/>
-                  
+                <Link to={`/videos/${video._id}`}>
+                  <FeedVideo video={video}  />
+                </Link>
                 </div>
               </div>
             )
           }) : status ? <div className='text-white text-3xl'>NO VIDEOS</div> : 
           <Link to='/login'>
-            <div className='text-white text-3xl'>LogIn</div>
+            <Button label='LOGIN' classname='text-3xl rounded-2xl px-5 py-4'/>
           </Link>
         }
       </div>

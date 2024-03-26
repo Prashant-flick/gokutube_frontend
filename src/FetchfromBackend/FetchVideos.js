@@ -21,8 +21,19 @@ const fetchUserVideo = async(userId) => {
     }
 }
 
+const fetchVideoById = async(id) => {
+    try {
+        const response = await axios.get(`/api/v1/videos/get-video/${id}`)
+      
+        return response.data.data
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 export {
     FetchAllVidoes,
     fetchUserVideo,
+    fetchVideoById
 }

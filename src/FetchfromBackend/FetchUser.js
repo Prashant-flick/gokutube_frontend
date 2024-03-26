@@ -24,7 +24,6 @@ const fetchUserById = async(id) => {
 const getUserChannelProfile = async({username,id}) => {
     try {
         const user = await axios.get(`/api/v1/users/c/${username}?id=${id}`)
-        console.log(user);
         return user.data.data
     } catch (error) {
         console.error(error);

@@ -14,6 +14,10 @@ import MyVideos from './Channel/MyVideos.jsx'
 import Playlists from './Channel/Playlists.jsx'
 import Subscribed from './Channel/Subscribed.jsx'
 import Subscribers from './Channel/Subscribers.jsx'
+import VideoPage from './Video/VideoPage.jsx'
+import GetVideoComments from './Comments/GetVideoComments.jsx'
+import CommentContent from './Comments/CommentContent.jsx'
+import VideoPageFeedVideo from './Video/VideoPageFeedVideo.jsx'
 
 export {
     Header,
@@ -31,5 +35,10 @@ export {
     MyVideos,
     Playlists,
     Subscribed,
-    Subscribers
+    Subscribers,
+    VideoPage,
+    GetVideoComments,
+    CommentContent,
+    VideoPageFeedVideo,
+
 }

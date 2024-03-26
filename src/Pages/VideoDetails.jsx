@@ -1,8 +1,28 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
+import { VideoPage } from '../Components/index.js'
 
 function VideoDetails() {
+  const [loader, setLoader] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoader(false)
+    }, 1000)
+  },[loader])
+  
   return (
-    <div>VideoDetails</div>
+    <div className='h-full w-full bg-gray-950'>
+    {
+      loader &&
+      <div className='w-full h-[90vh] flex justify-center items-center'>
+        <div className='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-100'>
+        </div>
+      </div>
+    }
+      <div className={`w-full h-full ${loader && "hidden"}`}>
+        <VideoPage />
+      </div>
+    </div>
   )
 }
 

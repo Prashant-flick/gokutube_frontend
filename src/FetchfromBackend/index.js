@@ -1,6 +1,7 @@
 import { 
     FetchAllVidoes,
     fetchUserVideo,
+    fetchVideoById
 
 } from "./FetchVideos";
 import { fetchUserById,
@@ -8,6 +9,9 @@ import { fetchUserById,
     getUserChannelProfile,
 
 } from "./FetchUser";
+import {
+    FetchComment
+} from "./FetchComment.js";
 
 export {
     FetchAllVidoes,
@@ -15,4 +19,7 @@ export {
     FetchCurrentUser,
     getUserChannelProfile,
     fetchUserVideo,
+    fetchVideoById,
+    FetchComment,
+    
 }

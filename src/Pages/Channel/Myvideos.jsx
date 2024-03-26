@@ -8,7 +8,7 @@ function Myvideos() {
   useEffect(() => {
     setTimeout(() => {
       setloader(false)
-    }, 400)
+    }, 800)
   })
 
   return (
