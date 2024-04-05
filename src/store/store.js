@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice'
 import videoReducer from './videoSlice';
+import commentReducer from './commentSlice';
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { combineReducers } from '@reduxjs/toolkit'
@@ -13,7 +14,8 @@ const persistConfig = {
 
 const reducer = combineReducers({
     authReducer,
-    videoReducer
+    videoReducer,
+    commentReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)

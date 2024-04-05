@@ -32,7 +32,7 @@ function Playlists() {
               <div
                   className='border-2 border-gray-400 rounded-xl w-full'
                 >
-                <img src={playlist.videos[0].thumbnail} alt="Playlist Thumbnail"/>
+                <img src={playlist.videos.length > 0 ? playlist.videos[0]?.thumbnail : 'https://res.cloudinary.com/dbmlz6pip/image/upload/v1712024540/yuunp9v1uivwfxjxtnqb.png'} alt="Playlist Thumbnail"/>
                 <h1 className='text-white'>{playlist.name}</h1>
                 <h1 className='text-white'>{playlist.description}</h1>
                 </div>

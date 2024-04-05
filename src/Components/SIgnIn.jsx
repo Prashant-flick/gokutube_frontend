@@ -17,7 +17,6 @@ function SIgnIn() {
   const login = async(e) => {
     e.preventDefault()
     const {emailorusername, password} = e.target;
-    console.log(emailorusername.value, password.value);
 
     try {
       axios.defaults.withCredentials = true;
@@ -29,7 +28,6 @@ function SIgnIn() {
         }
       )
       
-      console.log(data);
       dispatch(authLogin(data.data.data));
       navigate('/')
     } catch (error) {

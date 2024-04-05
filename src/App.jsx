@@ -7,17 +7,22 @@ import {
 import { useDispatch } from 'react-redux'
 import {logout as authLogout} from './store/authSlice.js'
 import { useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 function App() {
   const dispatch = useDispatch()
   const [loader , setloader] = useState(true)
   const location = useLocation()
   const title = location.pathname.split('/')[1]
+  
 
   useEffect(() => {
     setTimeout(() => {
       setloader(false)
     }, 400)
+
+    // dispatch(authLogout())
+
   })
 
   // window.addEventListener('beforeunload', function (event) {

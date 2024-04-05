@@ -25,11 +25,11 @@ function Header() {
   }
 
   return (
-      <div className='flex flex-row bg-gray-800 fixed top-0 left-0 right-0 justify-between items-center px-7 border-b-2 border-gray-700'
+      <div className='z-50 flex flex-row bg-gray-800 fixed top-0 left-0 right-0 justify-between items-center px-7 border-b-2 border-gray-700'
         style={{height: '10vh'}}
       >
         <Link to='/'>
-          <Logo width='35%' />
+          <Logo width='28%' />
         </Link>
         <SearchBar />
         <ul>
@@ -43,14 +43,14 @@ function Header() {
               {
                 show ?
                 <div onClick={(e) => toggle(e)} className='fixed left-0 top-0 h-[100vh] w-[100vw]'>
-                  <div onClick={(e) => e.stopPropagation()} className='rounded-lg top-16 right-2 mt-2 fixed flex flex-col justify-center items-center w-36 bg-gray-700'>
-                    <button onClick={(e) => logout(e)} className='h-10 font-medium border-b w-full border-gray-900'>
+                  <div onClick={(e) => e.stopPropagation()} className='rounded-lg top-16 right-2 mt-2 fixed flex flex-col justify-center items-center w-36 bg-gray-600'>
+                    <button onClick={(e) => logout(e)} className='h-10 text-white font-medium border-b w-full border-gray-900'>
                       Sign Out
                     </button>
-                    <button className='h-10 border-b w-full font-medium border-gray-900'>
+                    <button className='h-10 text-white border-b w-full font-medium border-gray-900'>
                       Switch Account
                     </button>
-                    <button className='h-10 font-medium w-full'>
+                    <button className='h-10 text-white font-medium w-full'>
                       Light Mode
                     </button>
                   </div>

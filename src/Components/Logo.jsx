@@ -6,7 +6,7 @@ function Logo({
 }) {
   return (
     <div>
-        <img src="temp/34322-200.png" alt="Logo" className={`{classname} cursor-pointer hover:opacity-60 transition duration-300 ease-in-out`}
+        <img src="https://res.cloudinary.com/dbmlz6pip/image/upload/v1712023591/dkctjfekmwpvy1mpndoa.png" alt="Logo" className={`${classname} object-cover object-center rounded-full cursor-pointer hover:opacity-60 transition duration-300 ease-in-out`}
             style={{width: width}}
         />
     </div>

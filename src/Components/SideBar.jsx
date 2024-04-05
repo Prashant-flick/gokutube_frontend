@@ -18,8 +18,8 @@ function SideBar() {
   }
 
   return (
-    <div className='px-1 pt-2 flex flex-col w-56 bg-gray-800 sticky h-full' style={{height: '90vh'}}>
-      <button className={`flex flex-row justify-center px-10 gap-3 py-3 ${isActive==='Home' ? 'bg-gray-400 rounded-2xl' : 'bg-gray-800'}`}
+    <div className='z-50 px-1 pt-2 flex flex-col w-56 bg-gray-800 sticky h-full' style={{height: '90vh'}}>
+      <button className={`flex flex-row justify-start px-10 gap-3 py-3 ${isActive==='Home' ? 'bg-gray-400 rounded-2xl' : 'bg-gray-800'}`}
         onClick={()=> changeActive({name:'Home', path:'/'})}
       >
         <div className=''>
@@ -29,7 +29,7 @@ function SideBar() {
           Home
         </h1>
       </button>
-      <button className={`flex flex-row justify-center px-10 gap-3 py-3 ${isActive==='Subscriptions' ? 'bg-gray-400 rounded-2xl' : 'bg-gray-800'}`}
+      <button className={`flex flex-row justify-start px-10 gap-3 py-3 ${isActive==='Subscriptions' ? 'bg-gray-400 rounded-2xl' : 'bg-gray-800'}`}
         onClick={()=> changeActive({name:'Subscriptions', path:'/'})}
       >
         <div className=''>
@@ -37,7 +37,7 @@ function SideBar() {
         </div>
         <h1 className={`${isActive==='Subscriptions' ? 'text-black' : 'text-white'}`}>Subscriptions</h1>
       </button>
-      <button className={`flex flex-row justify-center px-10 gap-3 py-3 ${isActive==='You' ? 'bg-gray-400 rounded-2xl' : 'bg-gray-800'}`}
+      <button className={`flex flex-row justify-start px-10 gap-3 py-3 ${isActive==='You' ? 'bg-gray-400 rounded-2xl' : 'bg-gray-800'}`}
         onClick={()=> changeActive({name:'You', path:`/channel/${user.username}`})}
       >
         <div className=''>
@@ -45,7 +45,7 @@ function SideBar() {
         </div>
         <h1 className={`${isActive==='You' ? 'text-black' : 'text-white'}`}>You</h1>
       </button>
-      <button className={`flex flex-row justify-center px-10 gap-3 py-3 ${isActive==='Tweets' ? 'bg-gray-400 rounded-2xl' : 'bg-gray-800'}`}
+      <button className={`flex flex-row justify-start px-10 gap-3 py-3 ${isActive==='Tweets' ? 'bg-gray-400 rounded-2xl' : 'bg-gray-800'}`}
         onClick={()=> changeActive({name:'Tweets', path:`/`})}
       >
         <div className=''>

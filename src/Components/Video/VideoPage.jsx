@@ -4,11 +4,15 @@ import { fetchVideoById, getUserChannelProfile, FetchAllVidoes } from '../../Fet
 import { useParams } from 'react-router-dom'
 import { Button, GetVideoComments, VideoPageFeedVideo } from '../index.js'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
 
 function VideoPage() {
+  const [subscribed, setSubscribed] = useState(false)
   const [user, setUser] = useState(null)
   const [video , setVideo] = useState(null)
+  const [videolikes , setVideolikes] = useState(0)
   const [videos, setVideos] = useState([])
+  const [ishovered, setIshovered] = useState(false)
   const { id } = useParams()
   const currentUser = useSelector(state => state.authReducer.userData)
 
@@ -24,6 +28,7 @@ function VideoPage() {
               id:data.owner,
               username: null
             })
+            setSubscribed((prev) => prev=data2.isSubscribed)
             setUser((prev) => prev=data2)
           })()
         }
@@ -36,27 +41,70 @@ function VideoPage() {
       const data = await FetchAllVidoes()
       setVideos((prev) => prev=data)
     })()
+    ;(async()=>{
+      const data = await axios.get(`/api/v1/like/get-video-likes/${id}`)
+      setVideolikes((prev) => prev=data.data.data.length)
+    })()
   },[id])
+
+  const toggleSubscribe = async(e) => {
+    e.preventDefault()
+    const data = await axios.post(`/api/v1/subscription/toggle-subscription/${user._id}`)
+    if(data.status === 200){
+      if(data.data.data === 'subscribed'){
+        setSubscribed((prev) => prev=true)
+      }else{
+        setSubscribed((prev) => prev=false)
+      }
+    }
+  }
+
+  const toggleLike = async(e) => {
+    e.preventDefault()
+    const data = await axios.post(`/api/v1/like/toggle-video-like/${video._id}`)
+    if(data.status === 200){
+      if(data.data.data === 'liked'){
+        setVideolikes((prev) => prev+1)
+      }else{
+        setVideolikes((prev) => prev-1)
+      }
+    }
+  }
 
   const CalcTimeFromNow = () => {
     let date  = new Date()
-    let date2 = date.toString().split(' ')
+    let date2 = date.toString().split(' ')  
     let videoTime = new Date(video.createdAt)
     let videoTime2 = videoTime.toString().split(' ')
 
     if(date2[3] - videoTime2[3] > 0){
+      if(date2[3] - videoTime2[3] === 1){
+        return '1 year ago'
+      }
       return `${date2[3] - videoTime2[3]} years ago`
     }
     if(date.getMonth() - videoTime.getMonth() > 0){
+      if(date.getMonth() - videoTime.getMonth() === 1){
+        return '1 month ago'
+      }
       return `${date.getMonth() - videoTime.getMonth()} months ago`
     }
     if(date2[2] - videoTime2[2] > 0){
+      if(date2[2] - videoTime2[2] === 1){
+        return '1 day ago'
+      }
       return `${date2[2] - videoTime2[2]} days ago`
     }
     if(date2[4].split(':')[0] - videoTime2[4].split(':')[0] > 0){
+      if(date2[4].split(':')[0] - videoTime2[4].split(':')[0] === 1){
+        return 'an hour ago'
+      }
       return `${date2[4].split(':')[0] - videoTime2[4].split(':')[0]} hours ago`
     }
     if(date2[4].split(':')[1] - videoTime2[4].split(':')[1] > 0){
+      if(date2[4].split(':')[1] - videoTime2[4].split(':')[1] === 1){
+        return 'a minute ago'
+      }
       return `${date2[4].split(':')[1] - videoTime2[4].split(':')[1]} minutes ago`
     }
   }
@@ -66,7 +114,13 @@ function VideoPage() {
         {
           video && user && 
           <div className='pl-20 pt-10 flex flex-col w-[67vw] h-full'>
-            <video controls src={video.videoFile} className='h-[70vh] rounded-2xl w-full overflow-hidden object-cover object-center'/>
+            <video 
+              controls={ishovered}
+              onMouseEnter={() => setIshovered(true)}
+              onMouseLeave={() => setIshovered(false)} 
+              src={video.videoFile} 
+              className='h-[70vh] rounded-2xl w-full overflow-hidden object-cover object-center'
+            />
             <h1 className='pt-3 ml-3 pb-2 text-white text-2xl font-bold'>{video.title}</h1>
             <div className='ml-3 gap-2 mt-1 flex flex-row mb-3 items-center w-full h-full'> 
               <div className='flex flex-row h-full w-full items-center'>
@@ -84,11 +138,11 @@ function VideoPage() {
                   currentUser._id === user._id ?
                   null
                   :
-                  <Button label={`${user.isSubscribed ? 'Subscribed' : 'Subscribe'}`} classname={`${user.isSubscribed ? 'bg-gray-500 hover:bg-gray-600' : ''} ml-3 mt-0 rounded-3xl h-full`}/>
+                  <Button onClick={(e) => toggleSubscribe(e)} label={`${subscribed ? 'Subscribed' : 'Subscribe'}`} classname={`${subscribed ? 'bg-gray-500 hover:bg-gray-600' : ''} ml-3 mt-0 rounded-3xl h-full`}/>
                 }
               </div>
               <div className='flex flex-row gap-3 w-full h-full items-center justify-end mr-3'>
-                <Button label='Like' classname='rounded-3xl mt-0 h-full'/>
+                <Button onClick={(e) => toggleLike(e)} label={`${videolikes} Like`} classname='rounded-3xl mt-0 h-full'/>
                 <Button label='DisLike' classname='rounded-3xl mt-0 h-full'/>
                 <Button label='Share' classname='rounded-3xl mt-0 h-full'/>
               </div>
@@ -107,7 +161,7 @@ function VideoPage() {
             </div>
           </div>
         }
-      <div className='flex flex-col w-[33vw] h-full px-4 pt-4'>
+      <div className='flex flex-col w-[33vw] h-full px-4 pt-8'>
         {
           videos && videos.length>0 &&
           videos.map((data, index) => {            

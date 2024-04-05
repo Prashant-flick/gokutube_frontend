@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from 'react'
 import { fetchUserById } from '../../FetchfromBackend/index.js'
+import { Link } from 'react-router-dom'
 
 function VideoPageFeedVideo({
   video=null
@@ -39,7 +40,16 @@ function VideoPageFeedVideo({
 
   return (
     <>
-      <video src={video.videoFile} className='rounded-xl h-24 w-44 mr-3 overflow-hidden object-cover object-center'></video>
+      <Link to={`/videos/${video._id}`}>
+        <video onClick={(e) => {
+          e.preventDefault()
+          window.location.href = `/videos/${video._id}`
+        }} 
+        
+        src={video.videoFile} 
+        className='rounded-xl h-24 w-44 mr-3 overflow-hidden object-cover object-center'
+      ></video>
+      </Link>
       <div className='flex flex-col h-full'>
         <h1 className='text-white text-lg font-bold' >{video.title}</h1>
         {
