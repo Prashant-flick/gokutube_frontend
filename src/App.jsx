@@ -7,7 +7,6 @@ import {
 import { useDispatch } from 'react-redux'
 import {logout as authLogout} from './store/authSlice.js'
 import { useLocation } from 'react-router-dom'
-import axios from 'axios'
 
 function App() {
   const dispatch = useDispatch()

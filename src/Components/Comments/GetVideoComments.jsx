@@ -2,28 +2,17 @@ import React,{useState, useEffect} from 'react'
 import { FetchComment } from '../../FetchfromBackend/index.js'
 import { CommentContent, UserAvatar, Button } from '../index.js'
 import axios from 'axios'
-import { setCommentData } from '../../store/commentSlice.js'
+import { setCommentData, addComment as addcommentslice } from '../../store/commentSlice.js'
 import { useDispatch , useSelector} from 'react-redux'
 
 function GetVideoComments({
   id=null
 }) {
-  const StoredComment = useSelector(state => state.commentReducer.commentData)
-  const [comments, setComments] = useState([])
+  const StoredCommentlength = useSelector(state => state.commentReducer.totalComments)
   const [show, setShow] = useState(false)
   const [comment, setComment] = useState('')
   const currentUser = useSelector(state => state.authReducer.userData)
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if(id){
-      ;(async()=>{
-        const data = await FetchComment(id)
-        setComments((prev) => data)
-        dispatch(setCommentData(data))
-      })()
-    }
-  },[])
 
   const showButton = (e) => {
     e.preventDefault()
@@ -41,14 +30,13 @@ function GetVideoComments({
     const data = await axios.post(`/api/v1/comment/add-comment/${id}?content=${comment}`,{text: comment})
     const data2 = data.data.data
     Object.assign(data2, {ownerUsername: currentUser.username, ownerAvatar: currentUser.avatar})
-    setComments((prev) => [data2, ...prev])
-    dispatch(addComment(data2))
+    dispatch(addcommentslice(data2))
     setComment(prev => prev='')
   }
 
   return (
     <>
-      <h1 className='px-3 pt-2 text-2xl font-bold text-white'>{comments.length} Comments</h1>
+      <h1 className='px-3 pt-2 text-2xl font-bold text-white'>{StoredCommentlength} Comments</h1>
       <div className='px-3 gap-3 flex mt-3 flex-row w-full h-full'>
         <UserAvatar/>
         <div className='flex flex-col w-full'>
@@ -73,13 +61,7 @@ function GetVideoComments({
         </div>
       </div>
       {
-        comments && comments.length>0 && comments.map((comment, index) => {
-          return (
-            <div key={index} className='flex flex-col mt-2'>
-              <CommentContent comment={comment}/>
-            </div>
-          )
-        })
+        id && <CommentContent videoId={id}/>
       }
     </>
   )

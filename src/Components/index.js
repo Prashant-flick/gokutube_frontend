@@ -18,6 +18,7 @@ import VideoPage from './Video/VideoPage.jsx'
 import GetVideoComments from './Comments/GetVideoComments.jsx'
 import CommentContent from './Comments/CommentContent.jsx'
 import VideoPageFeedVideo from './Video/VideoPageFeedVideo.jsx'
+import CommentData from './Comments/CommentData.jsx'
 
 export {
     Header,
@@ -40,5 +41,5 @@ export {
     GetVideoComments,
     CommentContent,
     VideoPageFeedVideo,
-
+    CommentData,
 }

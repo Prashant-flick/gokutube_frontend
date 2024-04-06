@@ -76,7 +76,7 @@ function FeedVideo({
           showVideo ?
           <video onMouseLeave={(e) => toggleVideo(e)} controls className={`w-full ${showVideo ? 'opacity-100 transition-opacity duration:500 ease-in-out': 'opacity-0'} ${myvideo? 'h-52 ' : 'h-60'} rounded-lg mb-2 border border-gray-700 overflow-hidden object-cover object-center`}>
             <source src={video.videoFile} type='video/mp4'/>
-            <img onmouse onMouseEnter={(e) => toggleVideo(e)} src={video.thumbnail} alt="Video Thumbnail"
+            <img onMouseEnter={(e) => toggleVideo(e)} src={video.thumbnail} alt="Video Thumbnail"
               className={`rounded-lg mb-2 transition-opacity duration-500 ease-in-out ${!showVideo ? 'opacity-100': 'opacity-0'}  ${myvideo? 'h-52' : 'h-60'} w-full overflow-hidden object-cover object-center`}
           />
           </video>

@@ -1,63 +1,63 @@
-import React,{useEffect, useState} from 'react'
-import { fetchUserById } from '../../FetchfromBackend/index.js'
-import axios from 'axios'
-import { useSelector } from 'react-redux'
+import React,{useState, useEffect} from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { FetchComment } from '../../FetchfromBackend/index.js'
+import { CommentData } from '../index.js'
+import InfiniteScroll from "react-infinite-scroll-component";
+import { setCommentData, addComment as addcommentslice } from '../../store/commentSlice.js'
 
 function CommentContent({
-  comment=null,
+  videoId=null
 }) {
-  const [showSettingOptions, setShowSettingOptions] = useState(false)
-  const [showSetting, setShowSetting] = useState(false)
-  const currentUser = useSelector(state => state.authReducer.userData)
-  const comments = useSelector(state => state.commentReducer.commentData)
-  console.log(comments);
+  const length = useSelector(state => state.commentReducer.totalComments)
+  const [comments, setComments] = useState([])
+  const dispatch = useDispatch()
+  const [limit, setlimit] = useState(10)
+  const [hasMore, sethasMore] = useState(true)
 
-  const deleteComment = async(e) => {
-    e.preventDefault()
-    await axios.delete(`/api/v1/comment/delete-comment/${comment._id}`)
-    
+  useEffect(() => {
+    if(videoId){
+      ;(async()=>{
+        const data = await FetchComment({videoId,limit})
+        dispatch(setCommentData(data))
+        setComments(prev => data.comments)
+      })()
+    }
+  },[])
+
+  const fetchMoreData = () => {
+    if(limit>(parseInt(length/10)+(length%10 ? 1: 0))*10){
+      sethasMore(false)
+      return
+    }
+    setTimeout(async() => {
+      setlimit(prev => prev+10)
+      const data = await FetchComment({videoId,limit})
+      dispatch(setCommentData(data))
+      setComments(prev=> data.comments)
+    }, 500);    
   }
 
-  return (
-    <>
+
+  return (  
+    <>  
       {
-        comment &&
-        <div 
-          className={`relative px-3 flex flex-row w-full h-full bg-gray-950 hover:bg-gray-800 rounded-xl py-3 ${comment.ownerUsername === currentUser.username ? '' : ''}`}
-          onMouseEnter={() => setShowSetting(true)}
-          onMouseLeave={() => {
-            setShowSetting(false)
-            setShowSettingOptions(false)
-          }}
+        comments && comments.length>0 &&
+        <InfiniteScroll
+          dataLength={limit}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<h4>Loading...</h4>}
         >
-          <div className="flex flex-row gap-5 h-full w-full">
-            <img src={comment.ownerAvatar} alt="user avatar" className='w-12 h-12 rounded-full'/>
-            <div className='flex flex-col'>
-              <h1 className='text-gray-400'>@{comment.ownerUsername}</h1>
-              <p className='text-white'>{comment.content}</p>
-            </div>
-          </div>
-          {
-            comment.ownerUsername === currentUser.username &&
-            <>
-              <button onClick={(e) => {
-                  e.preventDefault()
-                  setShowSettingOptions(prev => !prev)
-                }}
-                className={`text-white ${!showSetting && "hidden"} px-2`}
-              >
-                :
-              </button>
-              <div className={`py-1 ${!showSettingOptions && "hidden"} rounded-2xl h-14 w-20 bg-gray-600 flex flex-col absolute top-2 right-8`}>
-                <button
-                  className='border-b-2 w-full border-gray-800'
-                >Edit</button>
-                <button onClick={(e)=>deleteComment(e)}>Delete</button>
+          {comments.map((comment, index) => { 
+            return (
+              <div key={index} className='flex flex-col mt-2'>
+                <CommentData comment={comment}/>
               </div>
-            </>
-          }
-        </div>
+            )
+          })}
+        </InfiniteScroll>
       }
+        
     </>
   )
 }
