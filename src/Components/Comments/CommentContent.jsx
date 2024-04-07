@@ -20,9 +20,10 @@ function CommentContent({
         const data = await FetchComment({videoId,limit})
         dispatch(setCommentData(data))
         setComments(prev => data.comments)
+        console.log(data);
       })()
     }
-  },[comments])
+  },[])
 
   const fetchMoreData = () => {
     if(limit>(parseInt(length/10)+(length%10 ? 1: 0))*10){
@@ -38,7 +39,6 @@ function CommentContent({
     }, 500);    
   }
 
-
   return (  
     <>  
       {
@@ -51,7 +51,7 @@ function CommentContent({
         >
           {comments.map((comment, index) => { 
             return (
-              <div key={index} className='flex flex-col mt-2'>
+              <div key={index} className='flex flex-col mt-2 h-full w-full'>
                 <CommentData comment={comment}/>
               </div>
             )

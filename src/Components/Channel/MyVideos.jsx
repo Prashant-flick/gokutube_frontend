@@ -14,13 +14,14 @@ function MyVideos() {
     if(id){
       ;(async () => {
         const data = await fetchUserVideo(id)
-
         if(data){
-          setVideos(data)
+          setVideos(data.videos)
         }
       })()
     }
-  },[videos])
+  },[])
+
+  console.log(videos);
 
   //Upload Video
   const uploadVideo = async(e) => {
@@ -85,7 +86,7 @@ function MyVideos() {
     }
     <div className={`${videos.length ? 'grid grid-cols-3 gap-6 px-5 h-full' : 'flex justify-center items-center h-[29vh]'}`}>
       {
-        videos.length ? videos.map((video, index) => {
+        videos.length>0 && videos.map((video, index) => {
           return (
             <div
               key={index}
@@ -96,15 +97,7 @@ function MyVideos() {
                 </Link>
             </div>
           )
-        }) : 
-        <div className='h-full w-full'>
-          <div className='top-0 left-96 h-full w-full'>
-            <form className=' flex flex-col gap-2 w-[30%] h-[50%]'>
-              <Input label='Title' type='text' />
-            </form>
-          </div>
-          <Button label='Upload Video' />
-        </div>
+        })
       }
       
     </div>

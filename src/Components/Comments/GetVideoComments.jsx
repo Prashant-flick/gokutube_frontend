@@ -61,7 +61,7 @@ function GetVideoComments({
         </div>
       </div>
       {
-        id && <CommentContent videoId={id}/>
+        <CommentContent videoId={id}/>
       }
     </>
   )
