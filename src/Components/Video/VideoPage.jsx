@@ -14,13 +14,16 @@ function VideoPage() {
   const [ishovered, setIshovered] = useState(false)
   const { id } = useParams()
   const currentUser = useSelector(state => state.authReducer.userData)
+  const [likedbyme, setlikedbyme] = useState(false)
 
   useEffect(() => {
     if(id){
       ;(async()=>{
         const data = await fetchVideoById(id)
         setVideo((prev) => prev=data)
-        
+        setVideolikes(prev => prev=data.totallikes)
+        setlikedbyme(prev => prev=data.likedbyme)
+
         if(data){
           ;(async()=>{
             const data2 = await getUserChannelProfile({
@@ -33,13 +36,6 @@ function VideoPage() {
         }
       })()
     }
-  },[id])
-
-  useEffect(() => {
-    ;(async()=>{
-      const data = await axios.get(`/api/v1/like/get-video-likes/${id}`)
-      setVideolikes((prev) => prev=data.data.data.length)
-    })()
   },[id])
 
   const toggleSubscribe = async(e) => {
@@ -60,8 +56,10 @@ function VideoPage() {
     if(data.status === 200){
       if(data.data.data === 'liked'){
         setVideolikes((prev) => prev+1)
+        setlikedbyme((prev) => prev=true)
       }else{
         setVideolikes((prev) => prev-1)
+        setlikedbyme((prev) => prev=false)
       }
     }
   }
@@ -137,7 +135,7 @@ function VideoPage() {
                 }
               </div>
               <div className='flex flex-row gap-3 w-full h-full items-center justify-end mr-3'>
-                <Button onClick={(e) => toggleLike(e)} label={`${videolikes} Like`} classname='rounded-3xl mt-0 h-full'/>
+                <Button onClick={(e) => toggleLike(e)} label={`${videolikes} Like`} classname={`rounded-3xl mt-0 h-full ${likedbyme && 'bg-gray-700'}`}/>
                 <Button label='DisLike' classname='rounded-3xl mt-0 h-full'/>
                 <Button label='Share' classname='rounded-3xl mt-0 h-full'/>
               </div>

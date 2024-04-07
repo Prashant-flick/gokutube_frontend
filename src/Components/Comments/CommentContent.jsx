@@ -20,7 +20,6 @@ function CommentContent({
         const data = await FetchComment({videoId,limit})
         dispatch(setCommentData(data))
         setComments(prev => data.comments)
-        console.log(data);
       })()
     }
   },[])

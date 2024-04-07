@@ -29,7 +29,7 @@ function Header() {
         style={{height: '10vh'}}
       >
         <Link to='/'>
-          <Logo width='28%' />
+          <Logo classname="h-20"/>
         </Link>
         <SearchBar />
         <ul>
