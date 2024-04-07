@@ -9,8 +9,6 @@ function MyVideos() {
   const [videos, setVideos] = useState([])
   const [showUploadSection, setShowUploadSection] = useState(false)
   const {id} = useParams()
-  const {username} = useParams()
-  const navigate = useNavigate()
 
   useEffect(() => {
     if(id){
@@ -22,7 +20,7 @@ function MyVideos() {
         }
       })()
     }
-  },[id])
+  },[videos])
 
   //Upload Video
   const uploadVideo = async(e) => {
@@ -38,6 +36,8 @@ function MyVideos() {
     form.append('title', Title.value);
     form.append('description', Description.value);
 
+    setShowUploadSection(prev=> prev=false)
+    
     try {
       const data = await axios.post('/api/v1/videos/publish-video', form,
         {
@@ -46,10 +46,10 @@ function MyVideos() {
           }
         }
       )
-      console.log(data);
-      navigate(`/channel/${username}/my-videos/${id}`)
     } catch (error) {
       console.log(error);
+      setShowUploadSection(prev=> prev=false)
+      console.error('error while uploading video');
     }
   }
 
@@ -60,10 +60,10 @@ function MyVideos() {
       <div className='flex justify-center mb-4'>
         {
           showUploadSection ? 
-          <div onClick={(e)=>setShowUploadSection(prev=> prev=!prev)} className='top-0 left-0 flex items-center justify-center bg-white bg-opacity-20 fixed w-full h-full'>
+          <div onClick={(e)=>setShowUploadSection(prev=> prev=!prev)} className='top-0 z-20 left-0 flex items-center justify-center bg-white bg-opacity-20 fixed w-full h-full'>
             <form 
               onSubmit={(e)=>uploadVideo(e)} 
-              className='bg-gray-500 flex flex-col rounded-3xl pt-4 items-center gap-2 w-[25%] h-[55%] '
+              className='bg-gray-500 flex flex-col relative z-20 rounded-3xl pt-4 items-center gap-2 w-[25%] h-[55%] '
               onClick={(e) => e.stopPropagation()}  
             >
               <h1 className='text-3xl font-bold mb-1'>Input</h1>

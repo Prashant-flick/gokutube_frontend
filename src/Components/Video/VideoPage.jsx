@@ -11,7 +11,6 @@ function VideoPage() {
   const [user, setUser] = useState(null)
   const [video , setVideo] = useState(null)
   const [videolikes , setVideolikes] = useState(0)
-  const [videos, setVideos] = useState([])
   const [ishovered, setIshovered] = useState(false)
   const { id } = useParams()
   const currentUser = useSelector(state => state.authReducer.userData)
@@ -37,10 +36,6 @@ function VideoPage() {
   },[id])
 
   useEffect(() => {
-    ;(async()=>{
-      const data = await FetchAllVidoes()
-      setVideos((prev) => prev=data)
-    })()
     ;(async()=>{
       const data = await axios.get(`/api/v1/like/get-video-likes/${id}`)
       setVideolikes((prev) => prev=data.data.data.length)
@@ -162,21 +157,7 @@ function VideoPage() {
           </div>
         }
       <div className='flex flex-col w-[33vw] h-full px-4 pt-8'>
-        {
-          videos && videos.length>0 &&
-          videos.map((data, index) => {            
-            return(
-              <div 
-                key={index}
-                className='py-2 pl-1 flex h-full w-full flex-row'
-              >
-                {
-                  (data?._id != video?._id) &&
-                  <VideoPageFeedVideo video={data}/>
-                }
-              </div>
-          )})
-        }
+        <VideoPageFeedVideo/>
       </div>
     </div>
   )

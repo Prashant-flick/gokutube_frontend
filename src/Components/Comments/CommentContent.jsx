@@ -22,7 +22,7 @@ function CommentContent({
         setComments(prev => data.comments)
       })()
     }
-  },[])
+  },[comments])
 
   const fetchMoreData = () => {
     if(limit>(parseInt(length/10)+(length%10 ? 1: 0))*10){
@@ -31,7 +31,8 @@ function CommentContent({
     }
     setTimeout(async() => {
       setlimit(prev => prev+10)
-      const data = await FetchComment({videoId,limit})
+      const newlimit = limit+10
+      const data = await FetchComment({videoId,limit:newlimit})
       dispatch(setCommentData(data))
       setComments(prev=> data.comments)
     }, 500);    

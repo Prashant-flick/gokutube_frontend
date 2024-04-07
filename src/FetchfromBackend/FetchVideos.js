@@ -1,9 +1,10 @@
 import axios from "axios"
 
-const FetchAllVidoes = async() => {
+const FetchAllVidoes = async({
+    limit=9,
+}) => {
     try {
-        const response = await axios.get('/api/v1/videos/get-all-videos');
-
+        const response = await axios.get(`/api/v1/videos/get-all-videos?limit=${limit}`);
         return response.data.data
     } catch (error) {
         console.log(error);

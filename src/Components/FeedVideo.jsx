@@ -9,21 +9,6 @@ function FeedVideo({
 }) {
   const [avatar, setavatar] = useState(null);
   const [showVideo, setShowVideo] = useState(false);
-  const [showVideoOptions, setShowVideoOptions] = useState(false);
-
-  const toggleVideo = (e) => {
-    e.preventDefault();
-    setShowVideo((prev) => !prev);
-  }
-
-  const deleteVideo = async(e) => {
-      e.preventDefault();
-      console.log('here');
-      const data = await axios.delete(`/api/v1/videos/delete-video/${video._id}`);
-      if(data.status === 200){
-        window.location.reload();
-      }
-  }
 
   const CalcTimeFromNow = () => {
     let date  = new Date()
@@ -72,19 +57,24 @@ function FeedVideo({
 
   return (
     <div>
-        {
-          showVideo ?
-          <video onMouseLeave={(e) => toggleVideo(e)} controls className={`w-full ${showVideo ? 'opacity-100 transition-opacity duration:500 ease-in-out': 'opacity-0'} ${myvideo? 'h-52 ' : 'h-60'} rounded-lg mb-2 border border-gray-700 overflow-hidden object-cover object-center`}>
-            <source src={video.videoFile} type='video/mp4'/>
-            <img onMouseEnter={(e) => toggleVideo(e)} src={video.thumbnail} alt="Video Thumbnail"
-              className={`rounded-lg mb-2 transition-opacity duration-500 ease-in-out ${!showVideo ? 'opacity-100': 'opacity-0'}  ${myvideo? 'h-52' : 'h-60'} w-full overflow-hidden object-cover object-center`}
-          />
-          </video>
-          :
-          <img onmouse onMouseEnter={(e) => toggleVideo(e)} src={video.thumbnail} alt="Video Thumbnail"
-              className={`rounded-lg mb-2 transition-opacity duration-500 ease-in-out ${!showVideo ? 'opacity-100': 'opacity-0'}  ${myvideo? 'h-52' : 'h-60'} w-full overflow-hidden object-cover object-center`}
-          />
-        }
+        <video 
+          onMouseLeave={(e) => {
+            e.preventDefault()
+            setShowVideo((prev) => false)
+          }} 
+          controls
+          autoPlay
+          muted
+          className={`w-full ${showVideo ? '' : 'hidden'} ${myvideo? 'h-52 ' : 'h-60'} rounded-lg mb-2 border border-gray-700 overflow-hidden object-cover object-center`}>
+          <source src={video.videoFile} type='video/mp4'/>
+        </video>
+
+        <img onmouse onMouseEnter={(e) => {
+            e.preventDefault()
+            setShowVideo((prev) => true)
+          }} src={video.thumbnail} alt="Video Thumbnail"
+            className={`rounded-lg mb-2 transition-opacity duration-500 ease-in-out ${showVideo ? 'hidden': ''}  ${myvideo? 'h-52' : 'h-60'} w-full overflow-hidden object-cover object-center`}
+        />
   
         <div 
           className='ml-3 gap-2 flex flex-row mb-3 items-center relative'
@@ -104,28 +94,6 @@ function FeedVideo({
           <h1 className='text-white text-xl'>{video.title}</h1>
           <h2 className='text-gray-500'>{video.description} - {CalcTimeFromNow()}</h2>
           </div>
-          {
-            myvideo &&
-            <>
-              <button 
-                onClick={(e) => {
-                  e.preventDefault()
-                  setShowVideoOptions((prev) => true)
-                }}
-                className='text-white absolute right-1 px-2'
-              >
-                :
-              </button>
-              {
-                showVideoOptions && 
-                <div className='absolute flex flex-col text-sm text-white right-5 bg-gray-700 px-3 py-1 rounded-2xl'>
-                  <button className='w-full border-b hover:text-gray-400'>Edit</button>
-                  <button onClick={(e) => deleteVideo(e)} className='hover:text-gray-400'>Delete</button>
-                </div>
-              }
-            </>
-            
-          }
         </div>
     
        
