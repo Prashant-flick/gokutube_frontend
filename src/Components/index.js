@@ -20,6 +20,9 @@ import CommentContent from './Comments/CommentContent.jsx'
 import VideoPageFeedVideo from './Video/VideoPageFeedVideo.jsx'
 import CommentData from './Comments/CommentData.jsx'
 import FeedSingleVideo from './Video/FeedSingleVideo.jsx'
+import MyvideosFeed from './Channel/MyvideosFeed.jsx'
+import PlaylistFeed from './Channel/PlaylistFeed.jsx'
+import CustomVideoPlayer from './Video/CustomVideoPlayer.jsx'
 
 export {
     Header,
@@ -44,5 +47,9 @@ export {
     VideoPageFeedVideo,
     CommentData,
     FeedSingleVideo,
+    MyvideosFeed,
+    PlaylistFeed,
+    CustomVideoPlayer,
+    
     
 }

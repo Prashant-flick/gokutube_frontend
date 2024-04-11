@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import {deleteComment as deleteCommentAction, updateComment as updateCommentAction} from '../../store/commentSlice.js'
@@ -6,7 +6,6 @@ import {deleteComment as deleteCommentAction, updateComment as updateCommentActi
 function CommentData({
     comment=null,
 }) {
-  console.log(comment);
   const [showSettingOptions, setShowSettingOptions] = useState(false)
   const [showSetting, setShowSetting] = useState(false)
   const currentUser = useSelector(state => state.authReducer.userData)
@@ -14,17 +13,22 @@ function CommentData({
   const [readonly, setreadonly] = useState(true)
   const [content, setcontent] = useState(comment.content)
   const [likes, setlikes] = useState(comment.Likes)
-  const [likedbyme, setlikedbyme] = useState(comment.likedbyme)
+  const [likebyme, setlikebyme] = useState(comment.likedbyme)
+
+  useEffect(() => {
+    setlikebyme(prev=>prev=comment.likedbyme)
+    setlikes(prev=>prev=comment.Likes)
+  },[comment])
 
   const deleteComment = async(e) => {
     e.preventDefault()
-    await axios.delete(`/api/v1/comment/delete-comment/${comment._id}`)
-    dispatch(deleteCommentAction(comment))
+    const data = await axios.delete(`/api/v1/comment/delete-comment/${comment._id}`)
+    dispatch(deleteCommentAction(data.data.data))
+    setcontent(prev=> prev='')
   }
 
   const updateComment = async(e) => {
     e.preventDefault()
-    console.log('here');
     const newcomment = await axios.post(`/api/v1/comment/update-comment/${comment._id}?content=${content}`)
     dispatch(updateCommentAction(newcomment.data.data))
     setreadonly(true)
@@ -33,13 +37,12 @@ function CommentData({
   const toggleCommentLike = async(e) => {
     e.preventDefault()
     const data = await axios.post(`/api/v1/like/toggle-comment-like/${comment._id}`)
-    console.log(data.data.data);
     if(data.data.data === 'like'){
-      setlikedbyme(true)
-      setlikes(prev => prev+1);
+      setlikebyme(prev=>prev=true)
+      setlikes(prev=>prev+1)
     }else{
-      setlikedbyme(false)
-      setlikes(prev => prev-1)
+      setlikebyme(prev=>prev=false)
+      setlikes(prev=>prev-1)
     }
   }
 
@@ -68,7 +71,7 @@ function CommentData({
                 e.preventDefault()
                 setcontent(e.target.value)
               }}
-            type="text" value={content} className={`p-0 bg-transparent text-white w-full outline-none ${!readonly && 'border-b border-b-gray-500'}`} readOnly={readonly}/>
+            type="text" value={readonly ? comment.content : content} className={`p-0 bg-transparent text-white w-full outline-none ${!readonly && 'border-b border-b-gray-500'}`} readOnly={readonly}/>
             {
               !readonly &&
               <div className='gap-2 mt-2 flex flex-row justify-end'>
@@ -89,7 +92,7 @@ function CommentData({
             }
             <button
               onClick={(e) => toggleCommentLike(e)}
-              className={`mt-2 w-14 rounded-xl gap-1 justify-center flex flex-row ${likedbyme ? 'bg-gray-400' : 'bg-gray-700'}`}>
+              className={`mt-2 w-14 rounded-xl gap-1 justify-center flex flex-row ${likebyme ? 'bg-gray-400' : 'bg-gray-700'}`}>
               {likes}
               <img className='h-5 bg-transparent' src="https://cdn.iconscout.com/icon/free/png-256/free-like-2190245-1853251.png" alt="like" />
             </button>
@@ -106,12 +109,13 @@ function CommentData({
             >
             :
             </button>
-            <div className={`py-1 ${!showSettingOptions && "hidden"} rounded-2xl h-14 w-20 bg-gray-600 flex flex-col absolute top-2 right-8`}>
+            <div className={`py-1 ${!showSettingOptions && "hidden"} rounded-2xl h-14 w-20 bg-gray-600 flex flex-col absolute top-6 right-8`}>
             <button
               onClick={(e) => {
                 e.preventDefault()
                 setreadonly(false)
                 setShowSettingOptions(false)
+                setcontent(prev => prev=comment.content)
               }}
               className='border-b-2 w-full border-gray-800'
             >Edit</button>

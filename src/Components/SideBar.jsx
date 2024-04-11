@@ -1,16 +1,30 @@
 import React,{useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+// import { useParams } from 'react-router-dom'
 
 function SideBar() {
-  const [isActive, setIsActive] = useState('Home')
+
+  const [isActive, setIsActive] = useState('')
   const authstatus = useSelector(state => state.authReducer.status)
   const user = useSelector(state => state.authReducer.userData)
   const navigate = useNavigate()
+  let value = window.location.href
+  value = value.split('/')
+
+  useEffect(() => {
+    if(value.length===4){
+      setIsActive('Home')
+    }else if(value.length>=5){
+      setIsActive('You')
+    }
+  })
 
   const changeActive = (e) => {
-    setIsActive(e.name)
-    if(authstatus){
+    if(e.name == 'Home'){
+      navigate('/')
+    }
+    else if(authstatus){
       navigate(e.path)
     }else{
       navigate('/login')
@@ -38,7 +52,7 @@ function SideBar() {
         <h1 className={`${isActive==='Subscriptions' ? 'text-black' : 'text-white'}`}>Subscriptions</h1>
       </button>
       <button className={`flex flex-row justify-start px-10 gap-3 py-3 ${isActive==='You' ? 'bg-gray-400 rounded-2xl' : 'bg-gray-800'}`}
-        onClick={()=> changeActive({name:'You', path:`/channel/${user.username}`})}
+        onClick={()=> changeActive({name:'You', path:`/channel/${user?.username}`})}
       >
         <div className=''>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>

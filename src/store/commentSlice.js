@@ -24,15 +24,18 @@ const commentSlice = createSlice({
     updateComment: (state, action) => {
       state.commentData = state.commentData.map(comment => {
         if(comment._id === action.payload._id) {
-          return action.payload
+          comment.content = action.payload.content
         }
         return comment
       })
     },
-
+    clearcomment: (state) => {
+      state.commentData = []
+      state.totalComments = 0
+    }
   },
 })
 
-export const {addComment, deleteComment, updateComment, setCommentData} = commentSlice.actions
+export const {addComment, deleteComment, updateComment, setCommentData, clearcomment} = commentSlice.actions
 
 export default commentSlice.reducer

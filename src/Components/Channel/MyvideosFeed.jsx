@@ -1,15 +1,16 @@
 import React,{useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { deletedata as deletevideo } from '../../store/videoSlice.js';
 
-function FeedVideo({
-    video=null,
-    myvideo=false
+function MyvideosFeed({
+    video=null
 }) {
-  const status = useSelector(state => state.authReducer.status)
   const [showVideo, setShowVideo] = useState(false)
   const [showvideosettingicon, setshowvideosettingicon] = useState(false)
   const [showvideosetting, setshowvideosetting] = useState(false)
+  const dispatch = useDispatch()
 
   const CalcTimeFromNow = () => {
     let date  = new Date()
@@ -41,11 +42,20 @@ function FeedVideo({
       }
       return `${date2[4].split(':')[0] - videoTime2[4].split(':')[0]} hours ago`
     }
-    if(date2[4].split(':')[1] - videoTime2[4].split(':')[1] > 0){
+    if(date2[4].split(':')[1] - videoTime2[4].split(':')[1] >= 0){
       if(date2[4].split(':')[1] - videoTime2[4].split(':')[1] === 1){
         return 'a minute ago'
       }
       return `${date2[4].split(':')[1] - videoTime2[4].split(':')[1]} minutes ago`
+    }
+  }
+
+  const deleteVideo = async(e) => {
+    e.preventDefault()
+    console.log('here');
+    const data = await axios.delete(`/api/v1/videos/delete-video/${video._id}`)
+    if(data.status === 200){
+      dispatch(deletevideo(data.data.data._id))
     }
   }
 
@@ -56,6 +66,7 @@ function FeedVideo({
         setshowvideosettingicon(prev => true)
       }}
       onMouseLeave={() => {
+        setshowvideosetting(false)
         setshowvideosettingicon(prev => false)
         setShowVideo(false)
       }}
@@ -68,7 +79,7 @@ function FeedVideo({
           controls
           autoPlay
           muted
-          className={`w-full ${showVideo ? '' : 'hidden'} ${myvideo? 'h-52 ' : 'h-60'} opacity-10 hover:opacity-100 transition-all ease-in-out duration-[3s] rounded-lg mb-2 border border-gray-700 overflow-hidden object-cover object-center`}>
+          className={`w-full ${showVideo ? '' : 'hidden'} h-52 opacity-10 hover:opacity-100 transition-all ease-in-out duration-[3s] rounded-lg mb-2 border border-gray-700 overflow-hidden object-cover object-center`}>
           <source src={video.videoFile} type='video/mp4'/>
         </video>
 
@@ -77,7 +88,7 @@ function FeedVideo({
             setShowVideo(true)  
           }}
           src={video.thumbnail} alt="Video Thumbnail"
-            className={`rounded-lg mb-2 transition-opacity duration-500 ease-in-out ${showVideo ? 'hidden': ''}  ${myvideo? 'h-52' : 'h-60'} w-full overflow-hidden object-cover object-center`}
+            className={`rounded-lg mb-2 transition-opacity duration-500 ease-in-out ${showVideo ? 'hidden': ''} h-52 w-full overflow-hidden object-cover object-center`}
         />
       </Link>
   
@@ -86,24 +97,34 @@ function FeedVideo({
           onMouseLeave={()=> {
             setShowVideoOptions(false)
           }}
-        >
-          
-          <Link to={`${status ? `/channel/${null}?id=${video.owner}` : '/login'}`}>
-            <img src={video.owneravatar} alt="User Profile"
-            className='rounded-full h-10 w-10'
-            />
-          </Link>
-  
+          onClick={(e) => {
+            e.preventDefault()
+            if(showvideosetting===true){
+              setshowvideosetting(false)
+            }
+          }}
+        >  
           <div className='flex flex-col'>
           <h1 className='text-white text-xl'>{video.title}</h1>
           <h2 className='text-gray-500'>{video.views} views - {CalcTimeFromNow()}</h2>
           </div>
-          <button className={`text-white absolute right-1 ${!showvideosettingicon && 'hidden'}`}>:</button>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setshowvideosetting(prev => true)
+            }}
+            className={`text-white absolute right-1 px-2 py-1 ${!showvideosettingicon && 'hidden'}`}
+          >:</button>
+          <div onClick={(e) => {
+            e.stopPropagation()
+          }} className={`flex absolute flex-col bg-gray-700 w-40 rounded-lg py-1 right-5 top-2 ${!showvideosetting && 'hidden'}`}>
+            <button onClick={(e) => deleteVideo(e)} className='text-white border-b border-b-gray-600'>Delete</button>
+            <button className='text-white border-b border-b-gray-600'>Add to watch later</button>
+            <button className='text-white'>Add to playlist</button>
+          </div>
         </div>
-    
-       
     </div>
   )
 }
 
-export default FeedVideo
+export default MyvideosFeed

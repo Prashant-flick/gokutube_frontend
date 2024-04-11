@@ -4,7 +4,6 @@ const FetchCurrentUser = async() => {
     try {
         const user = await axios.get('/api/v1/users/get-current-user')
     
-        console.log(user);
         return user.data.data
     } catch (error){
         console.log(error);

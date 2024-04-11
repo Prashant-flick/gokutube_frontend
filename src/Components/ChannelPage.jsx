@@ -4,10 +4,11 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { useParams, useLocation } from 'react-router-dom'
 import { getUserChannelProfile } from '../FetchfromBackend/FetchUser.js'
+import axios from 'axios'
 
 function ChannelPage() { 
   const {username} = useParams()
-  const [user, setUser] = useState("some")
+  const [user, setUser] = useState('')
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -15,19 +16,29 @@ function ChannelPage() {
   const id = queryParams.get('id');
 
   useEffect(() => {
-    (async()=>{
-      const data = await getUserChannelProfile({id,username})
-      setUser(data)
-    })()
-  },[username])
+    if(id || username){
+      (async()=>{
+        const data = await getUserChannelProfile({id,username})
+        setUser(data)
+      })()
+    }
+  },[])
 
   const currentuser = useSelector(state => state.authReducer.userData)
   const [isActive, setIsActive] = useState(null)
 
+  const toggleSubscription = async (e) => {
+    e.preventDefault()
+    const data = await axios.post(`/api/v1/subscription/toggle-subscription/${user._id}`)
+    if(data.status === 200){
+      setUser({...user, isSubscribed: !user.isSubscribed})
+    }
+  }
+
   return (
     <>
       {
-        user.coverImage ?
+        user && user.coverImage ?
           <img src={user.coverImage} alt="" 
             style={{height: '23vh'}}
             className='w-full object-cover object-center rounded-2xl border-2 border-gray-800'
@@ -53,9 +64,9 @@ function ChannelPage() {
               <>
               {
                 user.isSubscribed ?
-                  <Button label='UnSubscribe' classname='mt-1 bg-gray-500 hover:bg-gray-700 rounded-3xl'/>
+                  <Button onClick={(e) => toggleSubscription(e)} label='UnSubscribe' classname='mt-1 bg-gray-500 hover:bg-gray-700 rounded-3xl'/>
                   :
-                  <Button label='Subscribe' classname='mt-1 rounded-3xl'/>
+                  <Button onClick={(e) => toggleSubscription(e)} label='Subscribe' classname='mt-1 rounded-3xl'/>
               }
               </>
           }

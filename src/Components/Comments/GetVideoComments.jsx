@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react'
 import { FetchComment } from '../../FetchfromBackend/index.js'
 import { CommentContent, UserAvatar, Button } from '../index.js'
 import axios from 'axios'
-import { setCommentData, addComment as addcommentslice } from '../../store/commentSlice.js'
+import { addComment as addcommentslice } from '../../store/commentSlice.js'
 import { useDispatch , useSelector} from 'react-redux'
 
 function GetVideoComments({
@@ -27,9 +27,9 @@ function GetVideoComments({
 
   const addComment = async(e) => {
     e.preventDefault()
-    const data = await axios.post(`/api/v1/comment/add-comment/${id}?content=${comment}`,{text: comment})
+    const data = await axios.post(`/api/v1/comment/add-comment/${id}?content=${comment}`)
     const data2 = data.data.data
-    Object.assign(data2, {ownerUsername: currentUser.username, ownerAvatar: currentUser.avatar})
+    Object.assign(data2, {ownerUsername: currentUser.username, ownerAvatar: currentUser.avatar, Likes: 0, likebyme: false})
     dispatch(addcommentslice(data2))
     setComment(prev => prev='')
   }

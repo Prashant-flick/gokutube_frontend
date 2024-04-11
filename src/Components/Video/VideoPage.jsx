@@ -1,8 +1,8 @@
 import React,{ useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
-import { fetchVideoById, getUserChannelProfile, FetchAllVidoes } from '../../FetchfromBackend/index.js'
+import { fetchVideoById, getUserChannelProfile } from '../../FetchfromBackend/index.js'
 import { useParams } from 'react-router-dom'
-import { Button, GetVideoComments, VideoPageFeedVideo } from '../index.js'
+import { Button, GetVideoComments, VideoPageFeedVideo, CustomVideoPlayer } from '../index.js'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 
@@ -11,7 +11,6 @@ function VideoPage() {
   const [user, setUser] = useState(null)
   const [video , setVideo] = useState(null)
   const [videolikes , setVideolikes] = useState(0)
-  const [ishovered, setIshovered] = useState(false)
   const { id } = useParams()
   const currentUser = useSelector(state => state.authReducer.userData)
   const [likedbyme, setlikedbyme] = useState(false)
@@ -106,13 +105,9 @@ function VideoPage() {
     <div className='bg-gray-950 flex flex-row h-full w-full'>
         {
           video && user && 
-          <div className='pl-20 pt-10 flex flex-col w-[67vw] h-full'>
-            <video 
-              controls={ishovered}
-              onMouseEnter={() => setIshovered(true)}
-              onMouseLeave={() => setIshovered(false)} 
-              src={video.videoFile} 
-              className='h-[70vh] rounded-2xl w-full overflow-hidden object-cover object-center'
+          <div className='pl-20 pt-10 flex flex-col w-[67vw] max-w-[70vw] h-full'>
+            <CustomVideoPlayer 
+              video={video} 
             />
             <h1 className='pt-3 ml-3 pb-2 text-white text-2xl font-bold'>{video.title}</h1>
             <div className='ml-3 gap-2 mt-1 flex flex-row mb-3 items-center w-full h-full'> 

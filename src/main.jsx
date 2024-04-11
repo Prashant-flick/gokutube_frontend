@@ -76,12 +76,6 @@ const router = createBrowserRouter([
             element: (
               <Playlist />
             )
-          },
-          {
-            path: '/channel/:username/delete-video',
-            element: (
-              <DeleteVideo />
-            )
           }
         ]
       },

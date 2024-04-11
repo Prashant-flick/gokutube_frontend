@@ -1,27 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { fetchUserVideo} from '../../FetchfromBackend'
-import { useParams, Link } from 'react-router-dom'
-import { Input, Button, FeedVideo } from '../index.js'
-import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { Input, Button, MyvideosFeed } from '../index.js'
+import { setdata as setvideodata, adddata as addvideodata} from '../../store/videoSlice.js'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
 function MyVideos() {
-  const [videos, setVideos] = useState([])
+  const videodata = useSelector(state => state.videoReducer.videoData)
+  const videolen = useSelector(state => state.videoReducer.length)
+  // const [videos, setVideos] = useState([])
   const [showUploadSection, setShowUploadSection] = useState(false)
   const {id} = useParams()
+  const dispatch = useDispatch()
+  const [length, setlength] = useState(0)
 
   useEffect(() => {
-    if(id){
+    if(videodata?.length < 1){
+      console.log('here');
       ;(async () => {
         const data = await fetchUserVideo(id)
         if(data){
-          setVideos(data.videos)
+          // setVideos(data.videos)
+          setlength(data.length)
+          dispatch(setvideodata(data))
         }
       })()
     }
-  },[])
+    else{
+      setlength(videolen)
+    }
 
-  console.log(videos);
+  },[])
 
   //Upload Video
   const uploadVideo = async(e) => {
@@ -47,6 +57,10 @@ function MyVideos() {
           }
         }
       )
+      console.log(data);
+
+      dispatch(addvideodata(data.data.data))
+      
     } catch (error) {
       console.log(error);
       setShowUploadSection(prev=> prev=false)
@@ -57,7 +71,7 @@ function MyVideos() {
   return (
     <>
     {
-      videos.length ? 
+      videodata?.length ? 
       <div className='flex justify-center mb-4'>
         {
           showUploadSection ? 
@@ -84,17 +98,15 @@ function MyVideos() {
       :
       <></>
     }
-    <div className={`${videos.length ? 'grid grid-cols-3 gap-6 px-5 h-full' : 'flex justify-center items-center h-[29vh]'}`}>
+    <div className={`${videodata?.length ? 'grid grid-cols-3 px-5 h-full' : 'flex justify-center items-center h-[29vh]'}`}>
       {
-        videos.length>0 && videos.map((video, index) => {
+        videodata?.length>0 && videodata.map((video, index) => {
           return (
             <div
               key={index}
               className='flex flex-col rounded-lg mt-1 w-full h-full'
             >
-                <Link to={`/videos/${video._id}`}>
-                  <FeedVideo video={video} myvideo={true} />
-                </Link>
+              <MyvideosFeed video={video}/>
             </div>
           )
         })

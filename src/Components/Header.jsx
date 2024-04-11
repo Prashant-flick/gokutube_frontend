@@ -4,13 +4,17 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { logout as authLogout } from '../store/authSlice.js'
+import { clearcomment } from '../store/commentSlice.js'
+import { clearvideos } from '../store/videoSlice.js'
 import axios  from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 function Header() {
   const status = useSelector(state => state.authReducer.status)
   const user = useSelector(state => state.authReducer.userData)
   const [show, setShow] = useState(false)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const toggle = (e) => {
     e.preventDefault()
@@ -19,9 +23,16 @@ function Header() {
 
   const logout = async(e) => {
     e.preventDefault()
-    dispatch(authLogout())
-    await axios.post('/api/v1/users/logout')
-    window.location.reload()
+    const data = await axios.post('/api/v1/users/logout')
+    console.log(data.status);
+    if(data.status == 200){
+      console.log('here');
+      dispatch(clearcomment())
+      dispatch(authLogout())
+      dispatch(clearvideos())
+      navigate('/')
+      window.location.reload()
+    }
   }
 
   return (
@@ -29,7 +40,7 @@ function Header() {
         style={{height: '10vh'}}
       >
         <Link to='/'>
-          <Logo classname="h-20"/>
+          <Logo classname="h-18"/>
         </Link>
         <SearchBar />
         <ul>
