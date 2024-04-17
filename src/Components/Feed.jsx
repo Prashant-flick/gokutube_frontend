@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { FetchAllVidoes } from '../FetchfromBackend/index.js';
+import { FetchAllVidoes, FetchUserPlaylist } from '../FetchfromBackend/index.js';
 import { useSelector } from 'react-redux';
 import { FeedVideo } from './index.js'
 import { useDispatch } from 'react-redux';
-import { setdata as setvideodata } from '../store/videoSlice.js'
 import InfiniteScroll from "react-infinite-scroll-component";
+import { setplaylist } from '../store/playlistSlice.js';
 
 function Feed() {
   const [videos, setvideos] = useState([]);
-  // const status = useSelector(state => state.authReducer.status);
+  const status = useSelector(state => state.authReducer.status);
   const [limit, setlimit] = useState(9)
   const [hasMore, sethasMore] = useState(true)
   const [length, setlength] = useState(0)
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  const currentUser = useSelector(state => state.authReducer.userData)
 
   useEffect(() => {
     ;(async() => {
@@ -21,6 +22,15 @@ function Feed() {
       setlength(prev => prev=data.length)
       // dispatch(setvideodata(data))
     })()
+
+
+    if(status){
+      ;(async() => {
+        console.log(currentUser._id);
+        const data = await FetchUserPlaylist(currentUser?._id)
+        dispatch(setplaylist(data))
+      })()
+    }
   },[])
 
   const fetchMoreData = () => {

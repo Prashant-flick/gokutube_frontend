@@ -1,6 +1,8 @@
 import React,{useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { FetchUserPlaylist } from '../FetchfromBackend/index.js';
+import axios from 'axios'
 
 function FeedVideo({
     video=null,
@@ -10,6 +12,11 @@ function FeedVideo({
   const [showVideo, setShowVideo] = useState(false)
   const [showvideosettingicon, setshowvideosettingicon] = useState(false)
   const [showvideosetting, setshowvideosetting] = useState(false)
+  const playlists = useSelector(state => state.playlistReducer.PlaylistData)
+  const [showplaylist, setshowplaylist] = useState(false)
+  const [showcreateplaylist, setshowcreateplaylist] = useState(false)
+  const [playlistname, setplaylistname] = useState(null)
+  const [playlistdescription, setplaylistdescription] = useState(null)
 
   const CalcTimeFromNow = () => {
     let date  = new Date()
@@ -49,14 +56,45 @@ function FeedVideo({
     }
   }
 
+  const addtoplaylist = async({e,index}) => {
+    e.preventDefault()
+    const data = await axios.post(`/api/v1/playlist/add-video-to-playlist/${playlists[index]?._id}/${video?._id}`)
+    if(data.status === 200){
+      setshowvideosetting(false)
+      setshowplaylist(false)
+      alert('Video added to playlist')
+    }else if(data.status === 201){
+      setshowvideosetting(false)
+      setshowplaylist(false)
+      alert('Video already exists in playlist')
+    }
+  }
+
+  const createPlaylist = async(e) => {
+    console.log('here');
+    const data = await axios.post(`/api/v1/playlist/create-playlist/${video?._id}`, {
+      name: playlistname,
+      description: playlistdescription
+    })
+
+    if(data.status === 200){
+      setshowplaylist(false)
+      setshowcreateplaylist(false)
+      setplaylistname(null)
+      setplaylistdescription(null)
+      alert('Playlist Created')
+    }
+  }
+
   return (
     <div
-      className='h-full w-full p-4'
+      className='h-full w-full p-4 relative'
       onMouseEnter={() => {
         setshowvideosettingicon(prev => true)
       }}
       onMouseLeave={() => {
         setshowvideosettingicon(prev => false)
+        setshowvideosetting(false)
         setShowVideo(false)
       }}
     >
@@ -98,10 +136,129 @@ function FeedVideo({
           <h1 className='text-white text-xl'>{video.title}</h1>
           <h2 className='text-gray-500'>{video.views} views - {CalcTimeFromNow()}</h2>
           </div>
-          <button className={`text-white absolute right-1 ${!showvideosettingicon && 'hidden'}`}>:</button>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setshowvideosetting(prev => !prev)
+            }}
+            className={`text-white absolute right-1 px-2 py-1 ${!showvideosettingicon && 'hidden'}`}
+          >
+            :
+          </button>
+          {
+            showvideosetting &&
+            <div
+              onMouseLeave={(e) => {
+                e.preventDefault()
+                setshowvideosetting(false)
+              }}
+              className='flex flex-col py-2 z-20 rounded-xl absolute border border-gray-700 right-0 top-10 bg-gray-700'>
+              <button 
+                onClick={(e) => addtoplaylist({e,index:0})}
+                className='text-white border-b px-2 border-b-gray-400 w-full'
+              >
+                Add to Watch later
+              </button>
+              <button 
+                onClick={(e) => {
+                  e.preventDefault()
+                  setshowplaylist(prev => !prev)
+                }}
+                className='text-white px-2'
+              >
+                Add to Playlist
+              </button>
+            </div>
+          }
         </div>
     
-       
+        {
+          showplaylist && 
+          <div 
+            onClick={(e) => {
+              e.preventDefault()
+              setshowplaylist(false)
+              setshowcreateplaylist(false)
+            }}
+            className='fixed z-40 h-[100vh] w-[100vw] left-32 top-0 flex items-center justify-center'
+          >
+            <div className='flex w-56 min-h-20 rounded-xl bg-gray-800 z-50 flex-col items-center pb-2'>
+              {
+                showcreateplaylist &&
+                  <form   
+                    className='flex flex-col justify-center items-center py-2'
+                  >
+                    <input
+                      name='name'
+                      value={playlistname}
+                      onChange={(e) => {
+                        setplaylistname(e.target.value)
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                      }}
+                      type="text" placeholder='name' className='bg-transparent py-1 px-2 text-white'
+                    />
+                    <input 
+                      name='description'
+                      value={playlistdescription}
+                      onChange={(e) => {
+                        setplaylistdescription(e.target.value)
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                      }}
+                      type="text" placeholder='description' className='bg-transparent px-2 py-1 mb-2 text-white'
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        createPlaylist(e)
+                      }}
+                      className='bg-gray-500 w-28 rounded-lg'
+                    >
+                      submit
+                    </button>
+                  </form>
+                
+              }
+              
+              {
+                !showcreateplaylist && 
+                  <button
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setshowcreateplaylist(true)
+                  }}
+                  className='text-white text-lg font-semibold bg-gray-900 border-b px-4 pt-2 rounded-t-lg pb-1 border-b-gray-400 w-full'
+                >
+                  Create New Playlist
+                </button>
+              }
+              
+
+              {
+                playlists.length && !showcreateplaylist &&
+                playlists.map((playlist, index) => {
+                  return (
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        addtoplaylist({e,index})
+                      }}
+                      className='text-white text-lg border-b px-4 py-1 border-b-gray-400 w-full'
+                    >
+                      {playlist.name}
+                    </button>
+                  )
+                })
+              }
+            </div>
+          </div>
+        }
     </div>
   )
 }

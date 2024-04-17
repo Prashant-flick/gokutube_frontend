@@ -13,6 +13,11 @@ import {
     FetchComment
 } from "./FetchComment.js";
 
+import {
+    FetchUserPlaylist,
+
+} from "./FetchPlaylist.js"
+
 export {
     FetchAllVidoes,
     fetchUserById,
@@ -21,5 +26,7 @@ export {
     fetchUserVideo,
     fetchVideoById,
     FetchComment,
+    FetchUserPlaylist,
+    
     
 }

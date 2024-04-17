@@ -24,22 +24,22 @@ function Playlists() {
   
 
   return (
-    <div className={`${playlists.length ? 'grid grid-cols-3 gap-4 px-5 pt-4 h-full mt-4' : 'flex justify-center items-center w-full h-[30vh]'}`}>
+    <div className={`${playlists.length ? 'grid grid-cols-3 gap-4 px-5 pt-4 h-full w-full mt-4' : 'flex justify-center items-center w-full h-[30vh]'}`}>
       {
         
         playlists.length>0 && playlists.map((playlist, index) => {
           return (
             <div
               key={index}
-              className='flex flex-col rounded-lg justify-center items-center'
+              className='flex flex-col h-full w-full rounded-lg justify-center items-center'
             >
               <div
-                className='rounded-xl w-full h-full'
+                className='rounded-xl w-full min-h-[50vh]'
               >
 
-              <Link to={`${playlist.videos.length>0 ? `/videos/${playlist.videos[0]}?playlist=true` : window.location.href}`}>
+              <Link to={`${playlist.videos.length>0 ? `/videos/${playlist.videos[0]}?playlist=true&playlistindex=${index}` : window.location.href}`}>
                 <img 
-                className='object-cover object-center overflow-hidden pt-1.5 rounded-lg bg-gray-500'
+                  className=' overflow-hidden w-full object-cover object-center h-56 pt-1.5 rounded-lg bg-gray-500'
                 src={playlist.videos.length > 0 ? playlist.Thumbnail : 'https://res.cloudinary.com/dbmlz6pip/image/upload/v1712024540/yuunp9v1uivwfxjxtnqb.png'} 
                 alt="Playlist Thumbnail"/>
               </Link>

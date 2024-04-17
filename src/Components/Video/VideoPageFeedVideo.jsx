@@ -11,13 +11,15 @@ function VideoPageFeedVideo() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const isplaylist = queryParams.get('playlist');
+  const playlistindex = queryParams.get('playlistindex');
 
   const [videos, setVideos] = useState([])
   const [limit, setlimit] = useState(10)
   const [length, setlength] = useState(0)
   const [hasMore, sethasMore] = useState(true)
 
-  const playlist = useSelector(state => state.playlistReducer.PlaylistData);
+  let playlist = useSelector(state => state.playlistReducer.PlaylistData);
+  playlist = playlist[playlistindex]
 
   useEffect(() => {
     ;(async()=>{
@@ -44,15 +46,15 @@ function VideoPageFeedVideo() {
     <>
       {
         isplaylist && 
-        playlist[0]?.videos?.length>0 &&
+        playlist?.videos?.length>0 &&
         <div className='border border-gray-200 rounded-xl w-full h-full'>
         <div className='pl-2 py-2 w-full'>
           <div className='w-full flex flex-row justify-between'>
             <div>
-              <h1 className='text-white text-bold text-lg px-2'>{playlist[0].name}</h1>
-              <h1 className='text-gray-400 px-2'>{playlist[0].description}</h1>
+              <h1 className='text-white text-bold text-lg px-2'>{playlist.name}</h1>
+              <h1 className='text-gray-400 px-2'>{playlist.description}</h1>
             </div>
-            <h1 className='text-gray-400 px-2'>Total Videos - {playlist[0].videos.length}</h1>
+            <h1 className='text-gray-400 px-2'>Total Videos - {playlist.videos.length}</h1>
           </div>
         
           <div className='h-[70vh] w-full overflow-y-scroll overflow-hidden'>
@@ -62,7 +64,7 @@ function VideoPageFeedVideo() {
             hasMore={hasMore}
             loader={<h4>Loading...</h4>}
             > */}
-              {playlist[0].videos.map((data, index) => {            
+              {playlist.videos.map((data, index) => {            
                 return(
                   <div 
                     key={index}
