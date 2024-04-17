@@ -7,7 +7,7 @@ function VideoDetails() {
   useEffect(() => {
     setTimeout(() => {
       setLoader(false)
-    }, 1000)
+    }, 1500)
   },[loader])
   
   return (

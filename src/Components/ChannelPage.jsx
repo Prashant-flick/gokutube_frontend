@@ -36,7 +36,7 @@ function ChannelPage() {
   }
 
   return (
-    <>
+    <div className='h-full w-full bg-black'>
       {
         user && user.coverImage ?
           <img src={user.coverImage} alt="" 
@@ -93,7 +93,7 @@ function ChannelPage() {
           >Subscribers</button>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

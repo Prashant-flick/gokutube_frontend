@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 function CustomVideoPlayer({
@@ -7,6 +7,7 @@ function CustomVideoPlayer({
 }) {
 
   const allVideos = useSelector(state => state.videoReducer.videoData)
+  const playlistVideos = useSelector(state => state.playlistReducer.PlaylistData[0].videos)
   const vidRef = useRef(null)
   const [ishovered, setishovered] = useState(false)
   const [play, setplay] = useState(true)
@@ -25,22 +26,47 @@ function CustomVideoPlayer({
   const [nextvideo, setnextvideo] = useState(false)
   const navigate = useNavigate()
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const isplaylist = queryParams.get('playlist');
+  
+
   useEffect(() => {
-    allVideos.map((vid, index) => {
-      if(vid._id === video._id){
-        if(index+1 === allVideos.length){
-          setnextvideoindex(0)
-          setprevvideoindex(index-1)
-          return
-        }else if(index===0){
-          setprevvideoindex(allVideos.length-1)
-          setnextvideoindex(index+1)
-        }else{
-          setprevvideoindex(index-1)
-          setnextvideoindex(index+1)
+    if(isplaylist){
+      playlistVideos.map((vid, index) => {
+        if(vid === video._id){
+          if(index+1 === playlistVideos.length){
+            setnextvideoindex(0)
+            setprevvideoindex(index-1)
+            return
+          }else if(index===0){
+            setprevvideoindex(playlistVideos.length-1)
+            setnextvideoindex(index+1)
+          }else{
+            setprevvideoindex(index-1)
+            setnextvideoindex(index+1)
+          }
         }
-      }
-    })
+      })
+    }else{
+      allVideos.map((vid, index) => {
+        if(vid._id === video._id){
+          if(index+1 === allVideos.length){
+            setnextvideoindex(0)
+            setprevvideoindex(index-1)
+            return
+          }else if(index===0){
+            setprevvideoindex(allVideos.length-1)
+            setnextvideoindex(index+1)
+          }else{
+            setprevvideoindex(index-1)
+            setnextvideoindex(index+1)
+          }
+        }
+      })
+    }
+
+    
     
     setdursec(Math.floor(vidRef.current.duration%60))
     setdurmin(Math.floor((vidRef.current.duration/60)%60))
@@ -55,7 +81,11 @@ function CustomVideoPlayer({
           <button 
             onClick={(e) => {
               e.preventDefault()
-              navigate(`/videos/${allVideos[nextvideoindex]?._id}`)
+              if(isplaylist){
+                navigate(`/videos/${playlistVideos[nextvideoindex]}?playlist=true`)
+              }else{
+                navigate(`/videos/${allVideos[nextvideoindex]?._id}`)
+              }
               window.location.reload()
             }}
             className='text-white bg-black p-6 rounded-full font-bold text-2xl'
@@ -119,7 +149,14 @@ function CustomVideoPlayer({
               <button
                 onClick={(e) => {
                   e.preventDefault()
-                  navigate(`/videos/${allVideos[prevvideoindex]?._id}`)
+                  if(isplaylist){
+                    console.log(playlistVideos[prevvideoindex]);
+                    console.log(playlistVideos[nextvideoindex]);
+                    console.log(video._id);
+                    navigate(`/videos/${playlistVideos[prevvideoindex]}?playlist=true`)
+                  }else{
+                    navigate(`/videos/${allVideos[prevvideoindex]?._id}`)
+                  }
                   window.location.reload()
                 }}
                 className='text-white py-2 px-3'
@@ -132,7 +169,11 @@ function CustomVideoPlayer({
               <button
                 onClick={(e) => {
                   e.preventDefault()
-                  navigate(`/videos/${allVideos[prevvideoindex]?._id}`)
+                  if(isplaylist){
+                    navigate(`/videos/${playlistVideos[nextvideoindex]}?playlist=true`)
+                  }else{
+                    navigate(`/videos/${allVideos[nextvideoindex]?._id}`)
+                  }
                   window.location.reload()
                 }}
                 className='text-white py-2 px-3'

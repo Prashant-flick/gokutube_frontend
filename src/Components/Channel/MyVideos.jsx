@@ -9,7 +9,6 @@ import axios from 'axios'
 function MyVideos() {
   const videodata = useSelector(state => state.videoReducer.videoData)
   const videolen = useSelector(state => state.videoReducer.length)
-  // const [videos, setVideos] = useState([])
   const [showUploadSection, setShowUploadSection] = useState(false)
   const {id} = useParams()
   const dispatch = useDispatch()
@@ -17,7 +16,6 @@ function MyVideos() {
 
   useEffect(() => {
     if(videodata?.length < 1){
-      console.log('here');
       ;(async () => {
         const data = await fetchUserVideo(id)
         if(data){
@@ -70,8 +68,6 @@ function MyVideos() {
 
   return (
     <>
-    {
-      videodata?.length ? 
       <div className='flex justify-center mb-4'>
         {
           showUploadSection ? 
@@ -95,24 +91,27 @@ function MyVideos() {
         
         <Button onClick={(e)=>setShowUploadSection(prev=> prev=!prev)} label='Upload Video' classname='ml-3 mb-0 mt-1 rounded-3xl'/>
       </div>
+    {
+      videodata?.length ?
+      <div className={`${videodata?.length ? 'grid grid-cols-3 px-5 h-full' : 'flex justify-center items-center h-[29vh]'}`}>
+        {
+          videodata?.length>0 && videodata.map((video, index) => {
+            return (
+              <div
+                key={index}
+                className='flex flex-col rounded-lg mt-1 w-full h-full'
+              >
+                <MyvideosFeed video={video}/>
+              </div>
+            )
+          })
+        }
+      </div>
       :
-      <></>
+      <div className='text-white h-[50vh] flex justify-center items-center pl-3 text-3xl font-bold'>
+        NO VIDEOS
+      </div>
     }
-    <div className={`${videodata?.length ? 'grid grid-cols-3 px-5 h-full' : 'flex justify-center items-center h-[29vh]'}`}>
-      {
-        videodata?.length>0 && videodata.map((video, index) => {
-          return (
-            <div
-              key={index}
-              className='flex flex-col rounded-lg mt-1 w-full h-full'
-            >
-              <MyvideosFeed video={video}/>
-            </div>
-          )
-        })
-      }
-      
-    </div>
     </>
   )
 }

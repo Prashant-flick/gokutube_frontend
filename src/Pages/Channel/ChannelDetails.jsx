@@ -15,7 +15,7 @@ function ChannelDetails() {
   })
 
   return (
-    <>
+    <div className='h-full w-full'>
       {
         loader &&
         <div className='w-full h-[90vh] flex justify-center items-center'>
@@ -29,13 +29,13 @@ function ChannelDetails() {
           {
             location.length>3 ? <Outlet/>
             :
-            <div className='flex justify-center items-center h-[30vh]'>
+            <div className='flex justify-center items-center h-[60vh]'>
               <h1 className='text-white text-2xl font-bold'>What's on you mind?</h1>
             </div>
           }
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

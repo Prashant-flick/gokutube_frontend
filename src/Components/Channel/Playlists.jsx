@@ -36,6 +36,7 @@ function Playlists() {
               <div
                 className='rounded-xl w-full h-full'
               >
+
               <Link to={`${playlist.videos.length>0 ? `/videos/${playlist.videos[0]}?playlist=true` : window.location.href}`}>
                 <img 
                 className='object-cover object-center overflow-hidden pt-1.5 rounded-lg bg-gray-500'

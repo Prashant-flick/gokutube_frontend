@@ -8,18 +8,18 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 function Feed() {
   const [videos, setvideos] = useState([]);
-  const status = useSelector(state => state.authReducer.status);
+  // const status = useSelector(state => state.authReducer.status);
   const [limit, setlimit] = useState(9)
   const [hasMore, sethasMore] = useState(true)
   const [length, setlength] = useState(0)
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   useEffect(() => {
     ;(async() => {
-      const data = await FetchAllVidoes({limit});
+      const data = await FetchAllVidoes({limit:limit+6});
       setvideos(prev => prev=data.videos);
       setlength(prev => prev=data.length)
-      dispatch(setvideodata(data))
+      // dispatch(setvideodata(data))
     })()
   },[])
 
@@ -28,12 +28,12 @@ function Feed() {
       sethasMore(false)
       return
     }
-    console.log(limit);
     setTimeout(async() => {
       setlimit(prev => prev+6)
       const newlimit = limit+6
       const data = await FetchAllVidoes({limit:newlimit})
       setvideos(prev => prev=data.videos)
+      setlength(prev => prev=data.length)
     }, 500);    
   }
   
