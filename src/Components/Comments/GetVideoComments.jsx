@@ -44,8 +44,8 @@ function GetVideoComments({
             name='input'
             onClick={(e) => showButton(e)} 
             onKeyDown={(e) => {
-              if(e.key === 'Enter'){
-                addComment(e)
+              if(e.key === ' '){
+                e.stopPropagation()
               }
             }}
             value={comment} 

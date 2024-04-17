@@ -102,12 +102,18 @@ function VideoPage() {
   }
 
   return (
-    <div className='bg-gray-950 flex flex-row h-full w-full'>
+    <div
+    onKeyDown={(e) => {
+      if(e.key === ' '){
+        e.preventDefault()
+      }
+    }}
+    className='bg-gray-950 flex flex-row h-full w-full'>
         {
           video && user && 
           <div className='pl-20 pt-10 flex flex-col w-[67vw] max-w-[70vw] h-full'>
             <CustomVideoPlayer 
-              video={video} 
+              video={video}
             />
             <h1 className='pt-3 ml-3 pb-2 text-white text-2xl font-bold'>{video.title}</h1>
             <div className='ml-3 gap-2 mt-1 flex flex-row mb-3 items-center w-full h-full'> 
