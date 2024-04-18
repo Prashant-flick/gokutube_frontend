@@ -71,7 +71,7 @@ function VideoPageFeedVideo() {
                     className='w-full'
                   >
                     {   
-                      <PlaylistFeed videoid={data} isplaying={data==id}/>
+                      <PlaylistFeed videoid={data} isplaying={data==id} playlistid={playlist?._id}/>
                     }
                   </div>
               )})}

@@ -15,6 +15,7 @@ function ChannelPage() {
 
   const id = queryParams.get('id');
 
+
   useEffect(() => {
     if(id || username){
       (async()=>{

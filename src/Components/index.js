@@ -23,6 +23,7 @@ import FeedSingleVideo from './Video/FeedSingleVideo.jsx'
 import MyvideosFeed from './Channel/MyvideosFeed.jsx'
 import PlaylistFeed from './Channel/PlaylistFeed.jsx'
 import CustomVideoPlayer from './Video/CustomVideoPlayer.jsx'
+import PlaylistVideo from './Channel/PlaylistVideo.jsx'
 
 export {
     Header,
@@ -50,6 +51,7 @@ export {
     MyvideosFeed,
     PlaylistFeed,
     CustomVideoPlayer,
+    PlaylistVideo,
     
     
 }
