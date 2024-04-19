@@ -19,15 +19,17 @@ function SideBar() {
 
   useEffect(() => {
     if(value.length===4){
-      if(value[3]===''){
-        setIsActive('Home')
-      }else if(value[3]==='history'){
+      if(value[3]==='history'){
         setIsActive('History')
-      }else{
+      }else if(value[3]==='?subscription=true'){
         setIsActive('Subscriptions')
+      }else{
+        setIsActive('Home')
       }
-    }else if(value.length>=5){
+    }else if(value.length>=5 && value[4]===`${user?.username}`){
       setIsActive('You')
+    }else{
+      setIsActive('Home')
     }
 
     ;(async() => {

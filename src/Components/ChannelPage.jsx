@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {Button, UserAvatar} from './index.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { useParams, useLocation } from 'react-router-dom'
 import { getUserChannelProfile } from '../FetchfromBackend/FetchUser.js'
 import { login as authlogin} from '../store/authSlice.js'
@@ -11,6 +11,7 @@ function ChannelPage() {
   const {username} = useParams()
   const [user, setUser] = useState('')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -180,32 +181,40 @@ function ChannelPage() {
       <div className=''>
         <div className='flex flex-row gap-10 mb-2'>
 
-          <Link to={`/channel/${username}/my-videos/${user._id}`}>
             <button className={`text-white text-lg ${isActive === 'my-videos' ? 'border-b-4 border-gray-400' : 'hover:border-b-4 border-gray-600'} hover:duration-200 hover:transition-all`}
-              onClick={()=>setIsActive('my-videos')}
+              onClick={(e)=> {
+                e.preventDefault()
+                setIsActive('my-videos')
+                navigate(`/channel/${username}/my-videos/${user._id}`)
+              }}
             >Videos</button>
-          </Link>
 
-          <Link to={`/channel/${username}/playlists/${user._id}`}>
             <button className={`text-white text-lg ${isActive === 'playlists' ? 'border-b-4 border-gray-400' : 'hover:border-b-4 border-gray-600'} hover:duration-200 hover:transition-all`}
-              onClick={()=>setIsActive('playlists')}
+              onClick={(e)=> {
+                e.preventDefault()
+                setIsActive('playlists')
+                navigate(`/channel/${username}/playlists/${user._id}`)
+              }}
             >Playlists</button>
-          </Link>
 
           {
             currentuser._id === user._id &&
             <>
-            <Link to={`/channel/${username}/subscribed/${user._id}`}>
               <button className={`text-white text-lg ${isActive === 'subscribed' ? 'border-b-4 border-gray-400' : 'hover:border-b-4 border-gray-600'} hover:duration-200 hover:transition-all`}
-                onClick={()=>setIsActive('subscribed')}
+                onClick={(e)=> {
+                  e.preventDefault()
+                  setIsActive('subscribed')
+                  navigate(`/channel/${username}/subscribed/${user._id}`)
+                }}
               >Subscribed</button>
-            </Link>
 
-            <Link to={`/channel/${username}/subscribers/${user._id}`}>
               <button className={`text-white text-lg ${isActive === 'subscribers' ? 'border-b-4 border-gray-400' : 'hover:border-b-4 border-gray-600'} hover:duration-200 hover:transition-all`}
-                onClick={()=>setIsActive('subscribers')}
+                onClick={(e)=> {
+                  e.preventDefault()
+                  setIsActive('subscribers')
+                  navigate(`/channel/${username}/subscribers/${user._id}`)
+                }}
               >Subscribers</button>
-            </Link>
             </>
           }
           
