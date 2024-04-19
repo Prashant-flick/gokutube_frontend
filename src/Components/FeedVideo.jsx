@@ -103,7 +103,6 @@ function FeedVideo({
           onMouseLeave={() => {
             setShowVideo(false)
           }}
-          controls
           autoPlay
           muted
           className={`w-full ${showVideo ? '' : 'hidden'} ${myvideo? 'h-52 ' : 'h-60'} opacity-10 hover:opacity-100 transition-all ease-in-out duration-[3s] rounded-lg mb-2 border border-gray-700 overflow-hidden object-cover object-center`}>
@@ -121,9 +120,6 @@ function FeedVideo({
   
         <div 
           className='ml-3 gap-2 flex flex-row mb-3 items-center relative'
-          onMouseLeave={()=> {
-            setShowVideoOptions(false)
-          }}
         >
           
           <Link to={`${status ? `/channel/${null}?id=${video.owner}` : '/login'}`}>
@@ -153,12 +149,15 @@ function FeedVideo({
                 setshowvideosetting(false)
               }}
               className='flex flex-col py-2 z-20 rounded-xl absolute border border-gray-700 right-0 top-10 bg-gray-700'>
-              <button 
-                onClick={(e) => addtoplaylist({e,index:0})}
-                className='text-white border-b px-2 border-b-gray-400 w-full'
-              >
-                Add to Watch later
-              </button>
+              {
+                playlists?.length>0 &&
+                <button 
+                  onClick={(e) => addtoplaylist({e,index:0})}
+                  className='text-white border-b px-2 border-b-gray-400 w-full'
+                >
+                  Add to {playlists[0]?.name}
+                </button>
+              }
               <button 
                 onClick={(e) => {
                   e.preventDefault()
@@ -240,8 +239,8 @@ function FeedVideo({
               
 
               {
-                playlists.length && !showcreateplaylist &&
-                playlists.map((playlist, index) => {
+                playlists?.length>0 && !showcreateplaylist &&
+                playlists?.map((playlist, index) => {
                   return (
                     <button 
                       onClick={(e) => {
@@ -251,7 +250,7 @@ function FeedVideo({
                       }}
                       className='text-white text-lg border-b px-4 py-1 border-b-gray-400 w-full'
                     >
-                      {playlist.name}
+                      {playlist?.name}
                     </button>
                   )
                 })

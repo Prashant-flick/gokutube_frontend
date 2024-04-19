@@ -27,8 +27,9 @@ function SIgnIn() {
           password: password.value
         }
       )
+
       
-      dispatch(authLogin(data.data.data));
+      dispatch(authLogin(data.data.data.user));
       navigate('/')
     } catch (error) {
       console.log(error);

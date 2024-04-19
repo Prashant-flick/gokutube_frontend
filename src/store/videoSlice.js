@@ -10,8 +10,8 @@ const videoSlice = createSlice({
     initialState,
     reducers: {
         setdata: (state, action) => {
-            state.videoData = action.payload.videos
-            state.length = action.payload.length
+            state.videoData = action.payload?.videos
+            state.length = action.payload?.length
         },
         adddata: (state, action) => {
             console.log(action.payload);

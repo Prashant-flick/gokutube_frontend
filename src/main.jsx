@@ -14,13 +14,13 @@ import {
   VideoDetails,
   SignUp,
   ChannelDetails,
-  DeleteVideo,
   Myvideos,
-  UploadVideo,
-  Playlist
+  Playlist,
+  History
 } from './Pages/index.js'
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
+import { Subscribed, Subscribers } from './Components/index.js'
 
 let persistor = persistStore(store);
 
@@ -60,12 +60,6 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: '/channel/:username/upload-video',
-            element: (
-              <UploadVideo />
-            )
-          },
-          {
             path: '/channel/:username/my-videos/:id',
             element: (
               <Myvideos />
@@ -75,6 +69,18 @@ const router = createBrowserRouter([
             path: '/channel/:username/playlists/:id',
             element: (
               <Playlist />
+            )
+          },
+          {
+            path: '/channel/:username/subscribers/:id',
+            element: (
+              <Subscribers />
+            )
+          },
+          {
+            path: '/channel/:username/subscribed/:id',
+            element: (
+              <Subscribed />
             )
           }
         ]
@@ -88,14 +94,6 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: '/search/:searchTerm',
-        element: (
-          <AuthLayout>
-            <SearchFeed />
-          </AuthLayout>
-        )
-      },
-      {
         path: '/tweets',
         element: (
           <AuthLayout>
@@ -103,6 +101,14 @@ const router = createBrowserRouter([
           </AuthLayout>
         )
       },
+      {
+        path: '/history',
+        element: (
+          <AuthLayout>
+            <History />
+          </AuthLayout>
+        )
+      }
     ]
   }
 ])

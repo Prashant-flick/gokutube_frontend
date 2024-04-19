@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 function PlaylistVideo({
   playlist=null,
@@ -11,6 +12,9 @@ function PlaylistVideo({
   const [editplaylist, seteditplaylist] = useState(false)
   const [name, setname] = useState(null)
   const [description, setdescription] = useState(null)
+  const {id} = useParams()
+  const currentUser = useSelector(state => state.authReducer.userData)
+
 
   const deletePlaylist = async(e) => {
     const data = await axios.delete(`/api/v1/playlist/delete-playlist/${playlist?._id}`)
@@ -50,7 +54,7 @@ function PlaylistVideo({
       </div>
       <button className='text-white text-sm ml-1 mt-1 hover:text-gray-300'>view full playlist</button>
       {
-        playlistoptionicon &&
+        playlistoptionicon && currentUser?._id === id &&
         <button
           onClick={(e) => {
             e.preventDefault()

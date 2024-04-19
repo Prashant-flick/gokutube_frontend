@@ -2,17 +2,15 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 function UserAvatar({
-  username=null,
+  avatar=null,
   classname,
 }) {
-
-  const user = useSelector(state => state.authReducer.userData)
 
   return (
     <div>
       {
-        user ? 
-          <img src={user.avatar} alt="User Avatar" 
+        avatar!=null ? 
+          <img src={avatar} alt="User Avatar" 
             className={`border-2 border-gray-400 rounded-full h-12 w-12 object-cover cursor-pointer hover:opacity-80 transition duration-300 ease-in-out ${classname}`}
           />
         :

@@ -3,10 +3,13 @@ import { FeedSingleVideo, PlaylistFeed } from '../index.js'
 import { FetchAllVidoes, fetchVideoById } from '../../FetchfromBackend/index.js'
 import { useParams, useLocation } from 'react-router-dom'
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setdata } from '../../store/videoSlice.js'
+
 
 function VideoPageFeedVideo() {
   const {id} = useParams()
+  console.log(id);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -17,15 +20,19 @@ function VideoPageFeedVideo() {
   const [limit, setlimit] = useState(10)
   const [length, setlength] = useState(0)
   const [hasMore, sethasMore] = useState(true)
+  const dispatch = useDispatch()
 
   let playlist = useSelector(state => state.playlistReducer.PlaylistData);
-  playlist = playlist[playlistindex]
+  if(playlist){
+    playlist = playlist[playlistindex]
+  }
 
   useEffect(() => {
     ;(async()=>{
       const data = await FetchAllVidoes({limit})
       setVideos((prev) => prev=data.videos)
       setlength((prev) => prev=data.length)
+      dispatch(setdata(data))
     })()
   },[id])
 
@@ -39,13 +46,14 @@ function VideoPageFeedVideo() {
       const newlimit = limit+10
       const data = await FetchAllVidoes({limit:newlimit})
       setVideos(prev => prev=data.videos)
+      dispatch(setdata(data))
     }, 500);    
   }
 
   return (
     <>
       {
-        isplaylist && 
+        isplaylist && playlist &&
         playlist?.videos?.length>0 &&
         <div className='border border-gray-200 rounded-xl w-full h-full'>
         <div className='pl-2 py-2 w-full'>
@@ -89,7 +97,7 @@ function VideoPageFeedVideo() {
           hasMore={hasMore}
           loader={<h4>Loading...</h4>}
         >
-          {videos.map((data, index) => {            
+          {videos?.map((data, index) => {            
             return(
               <div 
                 key={index}

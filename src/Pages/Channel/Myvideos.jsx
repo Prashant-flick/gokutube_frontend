@@ -8,20 +8,26 @@ function Myvideos() {
   useEffect(() => {
     setTimeout(() => {
       setloader(false)
-    }, 800)
+    }, 1000);
   })
+
+  window.addEventListener('popstate', function(event) {
+    // Your event handling code here
+    window.location.reload()
+  });
 
   return (
     <>
       {
-        loader &&
-        <div className='w-full h-[30vh] flex justify-center items-center'>
-          <div className='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-100'></div>
+        !loader ?
+        <div className={`h-full w-full`}>
+          <MyVideos/>
+        </div>
+        :
+        <div className='h-full w-full min-h-[53vh]'>
+
         </div>
       }
-      <div className={`h-full w-full ${loader && "hidden"}`}>
-        <MyVideos/>
-      </div>
     </>
     
   )

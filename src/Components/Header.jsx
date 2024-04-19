@@ -29,7 +29,7 @@ function Header() {
   }
 
   return (
-      <div className='z-50 flex flex-row bg-gray-800 fixed top-0 left-0 right-0 justify-between items-center px-7 border-b-2 border-gray-700'
+      <div className='z-50 flex flex-row bg-gray-950 fixed top-0 left-0 right-0 justify-between items-center px-7 border-b-2 border-gray-800'
         style={{height: '10vh'}}
       >
         <Link to='/'>
@@ -41,7 +41,7 @@ function Header() {
           status ? 
           <li>
               <button className='h-full w-full' onClick={(e)=>toggle(e)}>
-                <UserAvatar username={user.username}/>
+                <UserAvatar avatar={user?.avatar}/>
               </button>
 
               {
@@ -68,7 +68,7 @@ function Header() {
           :
           <li>
             <Link to='/login'>
-              <UserAvatar/>
+              <UserAvatar avatar={user?.avatar}/>
             </Link>
           </li>
         }

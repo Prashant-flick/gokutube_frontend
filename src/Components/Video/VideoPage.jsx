@@ -18,10 +18,10 @@ function VideoPage() {
   useEffect(() => {
     if(id){
       ;(async()=>{
-        const data = await fetchVideoById(id)
+        const data = await fetchVideoById({id, isplaying:true})
         setVideo((prev) => prev=data)
-        setVideolikes(prev => prev=data.totallikes)
-        setlikedbyme(prev => prev=data.likedbyme)
+        setVideolikes(prev => prev=data?.totallikes)
+        setlikedbyme(prev => prev=data?.likedbyme)
 
         if(data){
           ;(async()=>{

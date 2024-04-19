@@ -9,6 +9,7 @@ function Playlists() {
   const [playlists, setPlaylists] = useState([])
   const {id} = useParams()
   const dispatch = useDispatch()
+  const [loader, setloader] = useState(true)
 
   useEffect(() => {
     if(id){
@@ -21,23 +22,31 @@ function Playlists() {
         }
       })()
     }
+
+    setTimeout(() => {
+      setloader(false)
+    }, 1000);
   },[id])
   
 
   return (
-    <div className={`${playlists.length ? 'grid grid-cols-3 gap-4 px-5 pt-4 h-full min-h-[51vh] w-full mt-4' : 'flex justify-center items-center w-full h-[30vh]'}`}>
+    <div className={`${playlists.length ? 'grid grid-cols-3 gap-4 px-5 pt-4 h-full min-h-[51vh] w-full mt-4' : 'flex justify-center items-center w-full h-[53vh]'}`}>
       {
-        
-        playlists.length>0 && playlists.map((playlist, index) => {
-          return (
-            <div
-              key={index}
-              className='flex flex-col relative h-full w-full rounded-lg justify-center items-center'
-            >
-              <PlaylistVideo playlist={playlist} index={index}/>
-            </div>
-          )
-        })
+        !loader &&
+        <>
+        {
+          playlists.length>0 && playlists.map((playlist, index) => {
+            return (
+              <div
+                key={index}
+                className='flex flex-col relative h-full w-full rounded-lg justify-center items-center'
+              >
+                <PlaylistVideo playlist={playlist} index={index}/>
+              </div>
+            )
+          })
+        }
+        </>
       }
       
     </div>

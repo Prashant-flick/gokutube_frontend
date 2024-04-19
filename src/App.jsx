@@ -19,10 +19,14 @@ function App() {
     setTimeout(() => {
       setloader(false)
     }, 400)
-
     // dispatch(authLogout())
 
   })
+
+  window.addEventListener('popstate', function(event) {
+    // Your event handling code here
+    window.location.reload()
+  });
 
   // window.addEventListener('beforeunload', function (event) {
   //   // Code to execute before the window is closed or navigated away

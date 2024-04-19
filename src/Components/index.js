@@ -24,6 +24,9 @@ import MyvideosFeed from './Channel/MyvideosFeed.jsx'
 import PlaylistFeed from './Channel/PlaylistFeed.jsx'
 import CustomVideoPlayer from './Video/CustomVideoPlayer.jsx'
 import PlaylistVideo from './Channel/PlaylistVideo.jsx'
+import SubscribedChannelDetails from './Channel/SubscribedChannelDetails.jsx'
+import Subscribedfeed from './Subscribedfeed.jsx'
+import HistoryFeedVideo from './HistoryFeedVideo.jsx'
 
 export {
     Header,
@@ -52,6 +55,9 @@ export {
     PlaylistFeed,
     CustomVideoPlayer,
     PlaylistVideo,
+    SubscribedChannelDetails,
+    Subscribedfeed,
+    HistoryFeedVideo,
     
-    
+
 }

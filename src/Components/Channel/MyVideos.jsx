@@ -13,9 +13,10 @@ function MyVideos() {
   const {id} = useParams()
   const dispatch = useDispatch()
   const [length, setlength] = useState(0)
+  const currentUser  = useSelector(state => state.authReducer.userData)
 
   useEffect(() => {
-    if(videodata?.length < 1){
+    if(id){
       ;(async () => {
         const data = await fetchUserVideo(id)
         if(data){
@@ -88,8 +89,10 @@ function MyVideos() {
           :
           <></>
         }
-        
-        <Button onClick={(e)=>setShowUploadSection(prev=> prev=!prev)} label='Upload Video' classname='ml-3 mb-0 mt-1 rounded-3xl'/>
+        {
+          currentUser?._id === id &&
+            <Button onClick={(e)=>setShowUploadSection(prev=> prev=!prev)} label='Upload Video' classname='ml-3 mb-0 mt-1 rounded-3xl'/>
+        }
       </div>
     {
       videodata?.length ?

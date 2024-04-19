@@ -3,6 +3,8 @@ import authReducer from './authSlice'
 import videoReducer from './videoSlice';
 import commentReducer from './commentSlice';
 import playlistReducer from './playlistSlice'
+import subscribedSlice from './subscribedSlice'
+import subscribersSlice from './subscribersSlice';
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { combineReducers } from '@reduxjs/toolkit'
@@ -18,6 +20,8 @@ const reducer = combineReducers({
     videoReducer,
     commentReducer,
     playlistReducer,
+    subscribedSlice,
+    subscribersSlice,
     
 })
 

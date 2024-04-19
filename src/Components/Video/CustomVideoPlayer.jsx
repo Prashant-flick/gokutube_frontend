@@ -7,7 +7,10 @@ function CustomVideoPlayer({
 }) {
 
   const allVideos = useSelector(state => state.videoReducer.videoData)
-  const playlistVideos = useSelector(state => state.playlistReducer.PlaylistData[0].videos)
+  let playlistVideos = useSelector(state => state.playlistReducer?.PlaylistData)
+  if(playlistVideos){
+    playlistVideos = playlistVideos[0]?.videos
+  }
   const vidRef = useRef(null)
   const [ishovered, setishovered] = useState(false)
   const [play, setplay] = useState(true)
@@ -29,9 +32,11 @@ function CustomVideoPlayer({
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const isplaylist = queryParams.get('playlist');
+  console.log(isplaylist);
   
 
   useEffect(() => {
+    console.log(isplaylist);
     if(isplaylist){
       playlistVideos.map((vid, index) => {
         if(vid === video._id){

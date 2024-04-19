@@ -2,9 +2,10 @@ import axios from "axios"
 
 const FetchAllVidoes = async({
     limit=9,
+    query=""
 }) => {
     try {
-        const response = await axios.get(`/api/v1/videos/get-all-videos?limit=${limit}`);
+        const response = await axios.get(`/api/v1/videos/get-all-videos?limit=${limit}&query=${query}`);
         return response.data.data
     } catch (error) {
         console.log(error);
@@ -22,9 +23,9 @@ const fetchUserVideo = async(userId) => {
     }
 }
 
-const fetchVideoById = async(id) => {
+const fetchVideoById = async({id, isplaying=false}) => {
     try {
-        const response = await axios.get(`/api/v1/videos/get-video/${id}`)
+        const response = await axios.get(`/api/v1/videos/get-video/${id}?isplaying=${isplaying}`)
       
         return response.data.data
     } catch (error) {

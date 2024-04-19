@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deletedata as deletevideo } from '../../store/videoSlice.js';
 
 function MyvideosFeed({
@@ -11,6 +11,8 @@ function MyvideosFeed({
   const [showvideosettingicon, setshowvideosettingicon] = useState(false)
   const [showvideosetting, setshowvideosetting] = useState(false)
   const dispatch = useDispatch()
+  const {id} = useParams()
+  const currentUser = useSelector(state => state.authReducer.userData)
 
   const CalcTimeFromNow = () => {
     let date  = new Date()
@@ -118,7 +120,10 @@ function MyvideosFeed({
           <div onClick={(e) => {
             e.stopPropagation()
           }} className={`flex absolute flex-col bg-gray-700 w-40 rounded-lg py-1 right-5 top-2 ${!showvideosetting && 'hidden'}`}>
-            <button onClick={(e) => deleteVideo(e)} className='text-white border-b border-b-gray-600'>Delete</button>
+            {
+              currentUser?._id === id &&
+              <button onClick={(e) => deleteVideo(e)} className='text-white border-b border-b-gray-600'>Delete</button>
+            }
             <button className='text-white border-b border-b-gray-600'>Add to watch later</button>
             <button className='text-white'>Add to playlist</button>
           </div>
