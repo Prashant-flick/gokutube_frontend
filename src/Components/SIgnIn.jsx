@@ -19,8 +19,6 @@ function SIgnIn() {
     const {emailorusername, password} = e.target;
 
     try {
-      axios.defaults.withCredentials = true;
-
       const data = await axios.post('/api/v1/users/login', {
           email: emailorusername.value,
           username: emailorusername.value,
