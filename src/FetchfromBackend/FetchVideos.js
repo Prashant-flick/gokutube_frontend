@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "../api/axios"
 
 const FetchAllVidoes = async({
     limit=9,
