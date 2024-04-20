@@ -1,7 +1,7 @@
 import React from 'react'
 import {
-    Input,
-    Button,
+  Input,
+  Button,
 } from './index.js'
 import axios from '../api/axios'
 import { useDispatch } from 'react-redux'
@@ -19,7 +19,7 @@ function SIgnIn() {
     const {emailorusername, password} = e.target;
 
     try {
-      
+
       const data = await axios.post('/api/v1/users/login', {
           email: emailorusername.value,
           username: emailorusername.value,
