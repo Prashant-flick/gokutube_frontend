@@ -62,6 +62,7 @@ function ChannelPage() {
       for (var key of formData.entries()) {
         console.log(key[0]);
         console.log(key);
+        console.log(key[1]);
       }
 
       const data = await axios.post(`/api/v1/users/update-avatar`, formData,
@@ -82,7 +83,20 @@ function ChannelPage() {
     if(coverImage?.value){
       const formData = new FormData();
       formData.append('coverImage', coverImage.files[0])
-      const data = await axios.post(`/api/v1/users/update-coverImage`, formData)
+
+      for (var key of formData.entries()) {
+        console.log(key[0]);
+        console.log(key);
+        console.log(key[1]);
+      }
+      
+      const data = await axios.post(`/api/v1/users/update-coverImage`, formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'          
+        }
+      }
+    )
       console.log(data);
       if(data.status !== 200){
         flag2=false;

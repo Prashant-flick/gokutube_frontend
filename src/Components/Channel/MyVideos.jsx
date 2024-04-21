@@ -51,6 +51,7 @@ function MyVideos() {
     for (var key of form.entries()) {
       console.log(key[0]);
       console.log(key);
+      console.log(key[1]);
   }
 
     setShowUploadSection(prev=> prev=false)
