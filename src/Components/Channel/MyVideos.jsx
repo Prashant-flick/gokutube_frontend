@@ -49,7 +49,8 @@ function MyVideos() {
     console.log(Thumbnail?.files[0]);
     
     for (var key of form.entries()) {
-      console.log(key[0] + ', ' + key[1]);
+      console.log(key[0]);
+      console.log(key);
   }
 
     setShowUploadSection(prev=> prev=false)
@@ -58,7 +59,8 @@ function MyVideos() {
       const data = await axios.post('/api/v1/videos/publish-video', form,
         {
           headers: {
-            'Content-Type': 'multipart/form-data'          }
+            'Content-Type': 'multipart/form-data'          
+          }
         }
       )
       console.log(data);
