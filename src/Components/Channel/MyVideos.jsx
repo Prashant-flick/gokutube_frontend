@@ -55,9 +55,7 @@ function MyVideos() {
       const data = await axios.post('/api/v1/videos/publish-video', form,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
-          }
+            'Content-Type': 'multipart/form-data'          }
         }
       )
       console.log(data);

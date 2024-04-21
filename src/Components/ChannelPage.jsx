@@ -62,9 +62,7 @@ function ChannelPage() {
       const data = await axios.patch(`/api/v1/users/update-avatar`, formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': 'https://gokutube-fullstack-backend.vercel.app'
-          }
+            'Content-Type': 'multipart/form-data'          }
         }
       )
       console.log(data);
