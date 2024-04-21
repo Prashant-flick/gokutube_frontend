@@ -61,7 +61,9 @@ function ChannelPage() {
       formData.append('avatar', avatar?.files[0])
       console.log(avatar?.files[0]);
       console.log(formData);
-      const data = await axios.patch(`/api/v1/users/update-avatar`, formData)
+      const data = await axios.patch(`/api/v1/users/update-avatar`, {
+        avatar:avatar?.files[0]
+      })
       console.log(data);
       if(data.status !== 200){
         flag1=false;
