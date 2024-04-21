@@ -32,11 +32,9 @@ function CustomVideoPlayer({
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const isplaylist = queryParams.get('playlist');
-  // console.log(isplaylist);
   
 
   useEffect(() => {
-    console.log(isplaylist);
     if(isplaylist){
       playlistVideos.map((vid, index) => {
         if(vid === video._id){
