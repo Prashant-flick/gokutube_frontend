@@ -112,6 +112,7 @@ function VideoPage() {
         {
           video && user && 
           <div className='pl-20 pt-10 flex flex-col w-[67vw] max-w-[70vw] h-full'>
+            
             <CustomVideoPlayer 
               video={video}
             />
