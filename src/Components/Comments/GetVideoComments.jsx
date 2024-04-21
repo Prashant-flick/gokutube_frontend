@@ -38,7 +38,7 @@ function GetVideoComments({
     <>
       <h1 className='px-3 pt-2 text-2xl font-bold text-white'>{StoredCommentlength} Comments</h1>
       <div className='px-3 gap-3 flex mt-3 flex-row w-full h-full'>
-        <UserAvatar/>
+        <UserAvatar avatar={currentUser?.avatar}/>
         <div className='flex flex-col w-full'>
           <input 
             name='input'
