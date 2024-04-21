@@ -32,7 +32,7 @@ function CustomVideoPlayer({
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const isplaylist = queryParams.get('playlist');
-  console.log(isplaylist);
+  // console.log(isplaylist);
   
 
   useEffect(() => {
@@ -77,7 +77,7 @@ function CustomVideoPlayer({
     setduration(Math.floor(vidRef.current.duration))
   })
 
-  console.log(video);
+  // console.log(video);
 
   return (
       <div className={`h-full w-full relative`}>
@@ -155,9 +155,9 @@ function CustomVideoPlayer({
                   onClick={(e) => {
                     e.preventDefault()
                     if(isplaylist){
-                      console.log(playlistVideos[prevvideoindex]);
-                      console.log(playlistVideos[nextvideoindex]);
-                      console.log(video._id);
+                      // console.log(playlistVideos[prevvideoindex]);
+                      // console.log(playlistVideos[nextvideoindex]);
+                      // console.log(video._id);
                       navigate(`/videos/${playlistVideos[prevvideoindex]}?playlist=true`)
                     }else{
                       navigate(`/videos/${allVideos[prevvideoindex]?._id}`)
