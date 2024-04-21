@@ -62,6 +62,9 @@ function MyVideos() {
           headers: {
             'Content-Type': 'multipart/form-data'          
           }
+        },
+        {
+          withCredentials: true
         }
       )
       console.log(data);

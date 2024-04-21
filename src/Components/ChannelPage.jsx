@@ -70,6 +70,9 @@ function ChannelPage() {
           headers: {
             'Content-Type': 'multipart/form-data'          
           }
+        },
+        {
+          withCredentials: true
         }
       )
       console.log(data);
@@ -95,6 +98,9 @@ function ChannelPage() {
         headers: {
           'Content-Type': 'multipart/form-data'          
         }
+      },
+      {
+        withCredentials: true
       }
     )
       console.log(data);
