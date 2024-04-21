@@ -47,7 +47,10 @@ function MyVideos() {
     form.append('description', Description.value);
     console.log(VideoFile?.files[0]);
     console.log(Thumbnail?.files[0]);
-    console.log(form);
+    
+    for (var key of form.entries()) {
+      console.log(key[0] + ', ' + key[1]);
+  }
 
     setShowUploadSection(prev=> prev=false)
     

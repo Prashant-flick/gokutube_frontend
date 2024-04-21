@@ -58,11 +58,16 @@ function ChannelPage() {
       const formData = new FormData();
       formData.append('avatar', avatar?.files[0])
       console.log(avatar?.files[0]);
-      console.log(formData);
+    
+      for (var key of formData.entries()) {
+        console.log(key[0] + ', ' + key[1]);
+      }
+
       const data = await axios.patch(`/api/v1/users/update-avatar`, formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data'          }
+            'Content-Type': 'multipart/form-data'          
+          }
         }
       )
       console.log(data);
