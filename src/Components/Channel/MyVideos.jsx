@@ -37,7 +37,6 @@ function MyVideos() {
     e.preventDefault()
     const { Title, Description, VideoFile, Thumbnail } = e.target;
     const form = new FormData(); 
-    console.log(VideoFile?.files);
 
     //appending files
     form.append('videoFile', VideoFile.files[0]);
@@ -46,7 +45,8 @@ function MyVideos() {
     //appending other data
     form.append('title', Title.value);
     form.append('description', Description.value);
-
+    console.log(VideoFile?.files[0]);
+    console.log(Thumbnail?.files[0]);
     console.log(form);
 
     setShowUploadSection(prev=> prev=false)
@@ -55,7 +55,8 @@ function MyVideos() {
       const data = await axios.post('/api/v1/videos/publish-video', form,
         {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
           }
         }
       )
