@@ -37,6 +37,7 @@ function MyVideos() {
     e.preventDefault()
     const { Title, Description, VideoFile, Thumbnail } = e.target;
     const form = new FormData(); 
+    console.log(VideoFile?.files);
 
     //appending files
     form.append('videoFile', VideoFile.files[0]);
@@ -45,6 +46,8 @@ function MyVideos() {
     //appending other data
     form.append('title', Title.value);
     form.append('description', Description.value);
+
+    console.log(form);
 
     setShowUploadSection(prev=> prev=false)
     
