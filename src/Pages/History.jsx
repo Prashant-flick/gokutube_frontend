@@ -10,9 +10,12 @@ function History() {
   useEffect(() => {
     ;(async() => {
       const data = await FetchCurrentUser()
-      setUserHistory(data.watchHistory)
+      setUserHistory(data?.watchHistory)
+      console.log('user history', data?.watchHistory);
     })()
   },[user])
+
+  console.log('here but not there', userHistory);
 
   return (
     <div className='h-full w-full min-h-[90vh] px-36 py-8'>
