@@ -27,7 +27,7 @@ function SideBar() {
         setIsActive('Home')
       }
     }else if(value.length>=5){
-      value[4] = value[4]?.replace('%', ' ')
+      value[4] = value[4]?.replace('%20', ' ')
       if(value[4]===`${user?.username}`){
         setIsActive('You')
       }
