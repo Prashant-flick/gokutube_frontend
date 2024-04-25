@@ -26,8 +26,11 @@ function SideBar() {
       }else{
         setIsActive('Home')
       }
-    }else if(value.length>=5 && value[4]===`${user?.username}`){
-      setIsActive('You')
+    }else if(value.length>=5){
+      value[4] = value[4]?.replace('%', ' ')
+      if(value[4]===`${user?.username}`){
+        setIsActive('You')
+      }
     }else{
       setIsActive('Home')
     }
