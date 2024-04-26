@@ -48,7 +48,7 @@ function MyVideos() {
 
     try {
       let cloudname = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
-      let resourceType = 'auto'
+      let resourceType = type==='video' ? 'video' : 'image'
       let url = `https://api.cloudinary.com/v1_1/${cloudname}/${resourceType}/upload`
 
       let secure_url = ''
