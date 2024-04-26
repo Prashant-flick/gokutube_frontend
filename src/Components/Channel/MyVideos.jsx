@@ -72,16 +72,16 @@ function MyVideos() {
     
     try {
       setloading(true)
-      let flag1 = true
+      let flag1 = false
 
       if(thumbnail && videoFile && title && description){
-        flag1=false
+        console.log(thumbnail, videoFile, title, description);
         const url1 = await uploadFile('thumbnail')
         const url2 = await uploadFile('video')
 
         console.log(url1, url2);
         if(url1 && url2){
-          const data = await axios.patch(`/api/v1/videos/publish-video`, {
+          const data = await axios.post(`/api/v1/videos/publish-video`, {
             title,
             description,
             thumbnail: url1,
@@ -101,7 +101,7 @@ function MyVideos() {
 
         console.log('file uploaded successfully');
         setloading(false)
-        window.location.reload()
+        // window.location.reload()
       }
 
       
