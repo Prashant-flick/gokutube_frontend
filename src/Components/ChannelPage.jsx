@@ -121,7 +121,7 @@ function ChannelPage() {
 
         console.log('file uploaded successfully');
         setloading(false)
-        window.location.reload()
+        // window.location.reload()
       }
 
       
