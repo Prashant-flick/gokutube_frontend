@@ -2,7 +2,6 @@ import React,{useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Subscribedfeed } from './index.js'
-// import { useParams } from 'react-router-dom'
 import axios from '../api/axios'
 
 function SideBar() {
