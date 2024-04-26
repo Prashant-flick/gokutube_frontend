@@ -87,12 +87,13 @@ function ChannelPage() {
       let flag3 = true
 
       if(avatar){
+        flag1=false
         const url = await uploadFile('avatar')
         console.log(url);
         if(url){
           const data = await axios.patch(`/api/v1/users/update-avatar`, {avatar: url})
-          if(data.status !== 200){
-            flag1 = false
+          if(data.status === 200){
+            flag1 = true
           }
         }
       }
@@ -121,7 +122,7 @@ function ChannelPage() {
 
         console.log('file uploaded successfully');
         setloading(false)
-        // window.location.reload()
+        window.location.reload()
       }
 
       
