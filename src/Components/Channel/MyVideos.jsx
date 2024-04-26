@@ -21,6 +21,7 @@ function MyVideos() {
   const [description, setdescription] = useState(null)
   const [videoFile, setvideoFile] = useState(null)
   const [thumbnail, setthumbnail] = useState(null)
+  const [loading, setloading] = useState(false)
 
   useEffect(() => {
     if(id){
