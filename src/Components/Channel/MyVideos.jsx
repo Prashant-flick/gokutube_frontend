@@ -17,8 +17,8 @@ function MyVideos() {
   const currentUser  = useSelector(state => state.authReducer.userData)
 
   //form data
-  const [title, settitle] = useState(null)
-  const [description, setdescription] = useState(null)
+  const [title, settitle] = useState('')
+  const [description, setdescription] = useState('')
   const [videoFile, setvideoFile] = useState(null)
   const [thumbnail, setthumbnail] = useState(null)
   const [loading, setloading] = useState(false)
@@ -75,7 +75,6 @@ function MyVideos() {
       let flag1 = false
 
       if(thumbnail && videoFile && title && description){
-        console.log(thumbnail, videoFile, title, description);
         const url1 = await uploadFile('thumbnail')
         const url2 = await uploadFile('video')
 
@@ -101,7 +100,7 @@ function MyVideos() {
 
         console.log('file uploaded successfully');
         setloading(false)
-        // window.location.reload()
+        window.location.reload()
       }
 
       
@@ -116,38 +115,55 @@ function MyVideos() {
       <div className='flex justify-center mb-4'>
         {
           showUploadSection ? 
-          <div onClick={(e)=>setShowUploadSection(prev=> prev=!prev)} className='top-0 z-20 left-0 flex items-center justify-center bg-white bg-opacity-20 fixed w-full h-full'>
+          <div onClick={(e)=> {
+            e.preventDefault()
+            setShowUploadSection(prev=> prev=!prev)
+          }} 
+          className='top-0 z-20 left-0 flex items-center justify-center bg-white bg-opacity-20 fixed h-[100vh] w-[100vw]'
+        >
+          <div
+            onClick={(e) => {
+              // e.preventDefault()
+              e.stopPropagation()
+            }}
+            className='flex items-center gap-5 px-5 py-2 bg-gray-700 h-auto rounded-xl w-[25rem]'
+          >
             <form 
-              onSubmit={(e)=>uploadVideo(e)} 
-              className='bg-gray-500 flex flex-col relative z-20 rounded-3xl pt-4 items-center gap-2 w-[25%] h-[55%] '
-              onClick={(e) => e.stopPropagation()}  
+              onSubmit={(e) => {
+                e.preventDefault()
+                uploadVideo(e)
+              }}
+              className='flex justify-center h-full w-full flex-col gap-1 items-center' 
             >
               <h1 className='text-3xl font-bold mb-1'>Input</h1>
-              <Input 
-                className="w-[70%]" 
-                label='Title' 
-                type='text'
+              <label className='text-gray-400'>title</label>
+              <input 
+                className='w-56 outline-none bg-gray-200 pl-1 rounded-sm' 
+                type="text" 
                 value={title}
-                onChange={(e) => settitle((prev) => e.target.value)}
+                onChange={(e) => settitle((prev) => e.target.value)}  
               />
-              <Input 
-                className="w-[70%]" 
-                label='Description' 
-                type='text' 
+              <label className='text-gray-400'>description</label>
+              <input 
+                className='w-56 outline-none bg-gray-200 pl-1 rounded-sm' 
+                type="text" 
                 value={description}
-                onChange={(e) => setdescription((prev) => e.target.value)}
+                onChange={(e) => setdescription((prev) => e.target.value)}  
               />
-              <Input 
-                label='VideoFile' 
-                type='file' 
+              <label className='text-gray-400'>Video</label>
+              <input 
+                className='mb-2'
+                type="file" 
+                accept='video/'
                 onChange={(e) => setvideoFile((prev) => e.target.files[0])}
               />
-              <Input 
-                label='Thumbnail'   
-                type='file' 
+              <label className='text-gray-400'>Thumbnail</label>
+              <input 
+                type="file" 
+                accept='image/'
                 onChange={(e) => setthumbnail((prev) => e.target.files[0])}
               />
-              <Button label='Upload'/>
+              <Button type='submit' label='Upload' />
               { loading &&
                 <ThreeDots
                   visible={true}
@@ -162,6 +178,7 @@ function MyVideos() {
               }
             </form>
           </div>
+        </div>
           :
           <></>
         }
