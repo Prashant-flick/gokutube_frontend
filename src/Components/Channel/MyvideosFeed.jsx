@@ -96,9 +96,6 @@ function MyvideosFeed({
   
         <div 
           className='ml-3 gap-2 flex flex-row mb-3 items-center relative'
-          onMouseLeave={()=> {
-            setShowVideoOptions(false)
-          }}
           onClick={(e) => {
             e.preventDefault()
             if(showvideosetting===true){
