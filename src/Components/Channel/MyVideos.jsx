@@ -73,13 +73,11 @@ function MyVideos() {
     try {
       setloading(true)
       let flag1 = false
-      console.log(videoFile, thumbnail);
-      console.log(videoFile.size, thumbnail.size);
-      if(videoFile.size > 20000 || thumbnail.size > 5000){
+      if(videoFile?.size > 30000000 || thumbnail?.size > 5000000){
         setloading(false)
-        if(videoFile.size > 20000 && thumbnail.size > 5000){
+        if(videoFile.size > 30000000 && thumbnail.size > 5000000){
           alert('video(max 40MB) and thumbnail(max 5mb) too large ')
-        }else if(videoFile.size > 20000){
+        }else if(videoFile.size > 30000000){
           alert('video(max 40MB) too large ')
         }else{
           alert('thumbnail(max 5mb) too large ')
