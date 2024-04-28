@@ -73,6 +73,8 @@ function MyVideos() {
     try {
       setloading(true)
       let flag1 = false
+      console.log(videoFile, thumbnail);
+      console.log(videoFile.size, thumbnail.size);
       if(videoFile.size > 20000 || thumbnail.size > 5000){
         setloading(false)
         if(videoFile.size > 20000 && thumbnail.size > 5000){
