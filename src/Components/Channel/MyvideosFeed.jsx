@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import { useState} from 'react'
 import { Link, useParams } from 'react-router-dom';
 import axios from '../../api/axios.js';
 import { useDispatch, useSelector } from 'react-redux';
@@ -65,11 +65,11 @@ function MyvideosFeed({
     <div
       className='h-full w-full p-4'
       onMouseEnter={() => {
-        setshowvideosettingicon(prev => true)
+        setshowvideosettingicon(true)
       }}
       onMouseLeave={() => {
         setshowvideosetting(false)
-        setshowvideosettingicon(prev => false)
+        setshowvideosettingicon(false)
         setShowVideo(false)
       }}
     >
@@ -110,7 +110,7 @@ function MyvideosFeed({
           <button
             onClick={(e) => {
               e.preventDefault()
-              setshowvideosetting(prev => true)
+              setshowvideosetting(true)
             }}
             className={`text-white absolute right-1 px-2 py-1 ${!showvideosettingicon && 'hidden'}`}
           >:</button>

@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from '../../api/axios.js'
 import {deleteComment as deleteCommentAction, updateComment as updateCommentAction} from '../../store/commentSlice.js'
@@ -16,15 +16,15 @@ function CommentData({
   const [likebyme, setlikebyme] = useState(comment.likedbyme)
 
   useEffect(() => {
-    setlikebyme(prev=>prev=comment.likedbyme)
-    setlikes(prev=>prev=comment.Likes)
+    setlikebyme(comment.likedbyme)
+    setlikes(comment.Likes)
   },[comment])
 
   const deleteComment = async(e) => {
     e.preventDefault()
     const data = await axios.delete(`/api/v1/comment/delete-comment/${comment._id}`)
     dispatch(deleteCommentAction(data.data.data))
-    setcontent(prev=> prev='')
+    setcontent('')
   }
 
   const updateComment = async(e) => {
@@ -38,10 +38,10 @@ function CommentData({
     e.preventDefault()
     const data = await axios.post(`/api/v1/like/toggle-comment-like/${comment._id}`)
     if(data.data.data === 'like'){
-      setlikebyme(prev=>prev=true)
+      setlikebyme(true)
       setlikes(prev=>prev+1)
     }else{
-      setlikebyme(prev=>prev=false)
+      setlikebyme(false)
       setlikes(prev=>prev-1)
     }
   }
@@ -115,7 +115,7 @@ function CommentData({
                 e.preventDefault()
                 setreadonly(false)
                 setShowSettingOptions(false)
-                setcontent(prev => prev=comment.content)
+                setcontent(comment.content)
               }}
               className='border-b-2 w-full border-gray-800'
             >Edit</button>

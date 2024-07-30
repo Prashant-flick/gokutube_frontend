@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getUserChannelProfile } from '../../FetchfromBackend';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../Loader';
 
 function SubscribedChannelDetails({
     id=null,
@@ -8,14 +9,21 @@ function SubscribedChannelDetails({
 
   const [user, setuser] = useState(null)
   const navigate = useNavigate()
+  const [loader, setloader] = useState(true)
 
   useEffect(() => {
-    ;(async() => {
+    (async() => {
       const data = await getUserChannelProfile({id, username:null})
       setuser(data)
+      if(data){
+        setloader(false)
+      }
     })()
   },[id])
 
+  if(loader){
+    return <Loader />
+  }
 
   return (
       <div className='flex flex-row gap-6 items-center cursor-pointer'

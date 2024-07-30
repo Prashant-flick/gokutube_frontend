@@ -1,8 +1,8 @@
-import React,{ useState, useEffect} from 'react'
+import { useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { fetchVideoById, getUserChannelProfile } from '../../FetchfromBackend/index.js'
 import { useParams } from 'react-router-dom'
-import { Button, GetVideoComments, VideoPageFeedVideo, CustomVideoPlayer } from '../index.js'
+import { Button, GetVideoComments, VideoPageFeedVideo, CustomVideoPlayer, Loader } from '../index.js'
 import { useSelector } from 'react-redux'
 import axios from '../../api/axios.js'
 
@@ -14,23 +14,27 @@ function VideoPage() {
   const { id } = useParams()
   const currentUser = useSelector(state => state.authReducer.userData)
   const [likedbyme, setlikedbyme] = useState(false)
+  const [loading, setloading] = useState(true);
 
   useEffect(() => {
     if(id){
-      ;(async()=>{
+      (async()=>{
         const data = await fetchVideoById({id, isplaying:true})
-        setVideo((prev) => prev=data)
-        setVideolikes(prev => prev=data?.totallikes)
-        setlikedbyme(prev => prev=data?.likedbyme)
+        setVideo(data)
+        setVideolikes(data?.totallikes)
+        setlikedbyme(data?.likedbyme)
 
         if(data){
-          ;(async()=>{
+          (async()=>{
             const data2 = await getUserChannelProfile({
               id:data.owner,
               username: null
             })
-            setSubscribed((prev) => prev=data2.isSubscribed)
-            setUser((prev) => prev=data2)
+            setSubscribed(data2.isSubscribed)
+            setUser(data2)
+            if(data2){
+              setloading(false)
+            }
           })()
         }
       })()
@@ -42,9 +46,9 @@ function VideoPage() {
     const data = await axios.post(`/api/v1/subscription/toggle-subscription/${user._id}`)
     if(data.status === 200){
       if(data.data.data === 'subscribed'){
-        setSubscribed((prev) => prev=true)
+        setSubscribed(true)
       }else{
-        setSubscribed((prev) => prev=false)
+        setSubscribed(false)
       }
     }
   }
@@ -55,10 +59,10 @@ function VideoPage() {
     if(data.status === 200){
       if(data.data.data === 'liked'){
         setVideolikes((prev) => prev+1)
-        setlikedbyme((prev) => prev=true)
+        setlikedbyme(true)
       }else{
         setVideolikes((prev) => prev-1)
-        setlikedbyme((prev) => prev=false)
+        setlikedbyme(false)
       }
     }
   }
@@ -101,7 +105,9 @@ function VideoPage() {
     }
   }
 
-  console.log(video);
+  if(loading){
+    return <Loader />
+  }
 
   return (
     <div

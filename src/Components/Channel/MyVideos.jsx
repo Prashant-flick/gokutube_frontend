@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchUserVideo} from '../../FetchfromBackend'
 import { useParams } from 'react-router-dom'
-import { Input, Button, MyvideosFeed } from '../index.js'
+import { Button, Loader, MyvideosFeed } from '../index.js'
 import { setdata as setvideodata, adddata as addvideodata} from '../../store/videoSlice.js'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from '../../api/axios.js'
@@ -22,15 +22,16 @@ function MyVideos() {
   const [videoFile, setvideoFile] = useState(null)
   const [thumbnail, setthumbnail] = useState(null)
   const [loading, setloading] = useState(false)
+  const [loader, setloader] = useState(true)
 
   useEffect(() => {
     if(id){
-      ;(async () => {
+      (async () => {
         const data = await fetchUserVideo(id)
         if(data){
-          // setVideos(data.videos)
           setlength(data.length)
           dispatch(setvideodata(data))
+          setloader(false)
         }
       })()
     }
@@ -38,7 +39,7 @@ function MyVideos() {
       setlength(videolen)
     }
 
-  },[])
+  },[dispatch, id, videolen])
 
   //Upload Video
   const uploadFile = async (type) => {
@@ -68,7 +69,7 @@ function MyVideos() {
     }
   }
 
-  const uploadVideo = async (e) => {
+  const uploadVideo = async () => {
     
     try {
       setloading(true)
@@ -121,6 +122,10 @@ function MyVideos() {
     
   }
 
+  if(loader){
+    return <Loader />
+  }
+
   return (
     <>
       <div className='flex justify-center mb-4'>
@@ -134,7 +139,6 @@ function MyVideos() {
         >
           <div
             onClick={(e) => {
-              // e.preventDefault()
               e.stopPropagation()
             }}
             className='flex items-center gap-5 px-5 py-2 bg-gray-700 h-auto rounded-xl w-[25rem]'
@@ -152,27 +156,27 @@ function MyVideos() {
                 className='w-56 outline-none bg-gray-200 pl-1 rounded-sm' 
                 type="text" 
                 value={title}
-                onChange={(e) => settitle((prev) => e.target.value)}  
+                onChange={(e) => settitle(e.target.value)}  
               />
               <label className='text-gray-400'>description</label>
               <input 
                 className='w-56 outline-none bg-gray-200 pl-1 rounded-sm' 
                 type="text" 
                 value={description}
-                onChange={(e) => setdescription((prev) => e.target.value)}  
+                onChange={(e) => setdescription(e.target.value)}  
               />
               <label className='text-gray-400'>Video</label>
               <input 
                 className='mb-2'
                 type="file" 
                 accept='video/'
-                onChange={(e) => setvideoFile((prev) => e.target.files[0])}
+                onChange={(e) => setvideoFile(e.target.files[0])}
               />
               <label className='text-gray-400'>Thumbnail</label>
               <input 
                 type="file" 
                 accept='image/'
-                onChange={(e) => setthumbnail((prev) => e.target.files[0])}
+                onChange={(e) => setthumbnail(e.target.files[0])}
               />
               <Button type='submit' label='Upload' />
               { loading &&
@@ -195,7 +199,7 @@ function MyVideos() {
         }
         {
           currentUser?._id === id &&
-            <Button onClick={(e)=>setShowUploadSection(prev=> prev=!prev)} label='Upload Video' classname='ml-3 mb-0 mt-1 rounded-3xl'/>
+            <Button onClick={()=>setShowUploadSection(prev=> prev=!prev)} label='Upload Video' classname='ml-3 mb-0 mt-1 rounded-3xl'/>
         }
       </div>
     {

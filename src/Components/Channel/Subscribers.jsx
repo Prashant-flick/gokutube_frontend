@@ -1,8 +1,8 @@
-import React,{useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import axios from '../../api/axios.js'
-import { SubscribedChannelDetails } from '../index.js'
+import { Loader, SubscribedChannelDetails } from '../index.js'
 
 function Subscribers() {
 
@@ -13,17 +13,21 @@ function Subscribers() {
   const [loader, setloader] = useState(true)
 
   useEffect(() => {
-    ;(async() => {
+    (async() => {
       const data = await axios.get(`/api/v1/subscription/get-subscribers/${id}?limit=${limit}`)
       setsubscribers(data.data.data)
+      if(data){
+        setloader(false);
+      }
     })()
-    setTimeout(() => {
-      setloader(false)
-    }, 700);
-  },[id])
+  },[id, limit])
 
   const fetchMoreData = async() => {
 
+  }
+
+  if(loader){
+    return <Loader />
   }
 
   return (
@@ -36,20 +40,15 @@ function Subscribers() {
           loader={<h4>Loading...</h4>}
         >
           {
-            !loader &&
-            <>
-            {
-              subscribers.length ? subscribers.map((item, index) => {
-                return (
-                    <div key={index} className='h-full w-full py-4 hover:bg-gray-800 px-4 rounded-2xl'>
-                      <SubscribedChannelDetails id={item.subscriber}/>
-                    </div>
-                )
-              })
-              :
-              <h1 className='text-white'>No Subscribers</h1>
-            }
-            </>
+            subscribers.length ? subscribers.map((item, index) => {
+              return (
+                  <div key={index} className='h-full w-full py-4 hover:bg-gray-800 px-4 rounded-2xl'>
+                    <SubscribedChannelDetails id={item.subscriber}/>
+                  </div>
+              )
+            })
+            :
+            <h1 className='text-white'>No Subscribers</h1>
           }
         </InfiniteScroll>
       </div>

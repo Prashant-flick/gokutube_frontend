@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import {Button, UserAvatar} from './index.js'
-import { useSelector, useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react'
+import {Button, Loader, UserAvatar} from './index.js'
+import { useSelector } from 'react-redux'
 import { useNavigate} from 'react-router-dom';
 import { useParams, useLocation } from 'react-router-dom'
 import { getUserChannelProfile } from '../FetchfromBackend/FetchUser.js'
@@ -10,14 +10,13 @@ import { ThreeDots } from 'react-loader-spinner'
 function ChannelPage() { 
   const {username} = useParams()
   const [user, setUser] = useState('')
-  const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  //image and video upload on cloudinary
   const [avatar, setavatar] = useState(null)
   const [coverImage, setcoverImage] = useState(null)
   const [fullName, setfullName] = useState('')
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(true)
+  const [mainloading, setmainloading] = useState(true);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -31,6 +30,9 @@ function ChannelPage() {
       (async()=>{
         const data = await getUserChannelProfile({id,username})
         setUser(data)
+        if(data){
+          setmainloading(false)
+        }
       })()
     }
 
@@ -78,7 +80,7 @@ function ChannelPage() {
     }
   }
 
-  const customizeChannel = async (e) => {
+  const customizeChannel = async () => {
     
     try {
       setloading(true)
@@ -132,6 +134,10 @@ function ChannelPage() {
     
   }
 
+  if(mainloading){
+    return <Loader />
+  }
+
   return (
     <div className='h-full w-full bg-gray-950'>
       {
@@ -167,14 +173,13 @@ function ChannelPage() {
                 {
                   showcustomizeoptions &&
                   <div 
-                    onClick={(e) => {
+                    onClick={() => {
                       setshowcustomizeoptions(false)
                     }}
                     className='fixed h-[100vh] w-[100vw] top-0 left-0 flex justify-center items-center'
                   >
                     <div
                       onClick={(e) => {
-                        // e.preventDefault()
                         e.stopPropagation()
                       }}
                       className='flex flex-row items-center gap-5 px-5 py-2 bg-gray-700 h-72 rounded-xl w-[30rem]'
@@ -192,20 +197,20 @@ function ChannelPage() {
                           className='w-56 outline-none bg-gray-200 pl-1 rounded-sm' 
                           type="text" 
                           value={fullName}
-                          onChange={(e) => setfullName((prev) => e.target.value)}  
+                          onChange={(e) => setfullName(e.target.value)}  
                         />
                         <label className='text-gray-400'>avatar</label>
                         <input 
                           className='mb-2'
                           type="file" 
                           accept='image/'
-                          onChange={(e) => setavatar((prev) => e.target.files[0])}
+                          onChange={(e) => setavatar(e.target.files[0])}
                         />
                         <label className='text-gray-400'>coverImage</label>
                         <input 
                           type="file" 
                           accept='image/'
-                          onChange={(e) => setcoverImage((prev) => e.target.files[0])}
+                          onChange={(e) => setcoverImage(e.target.files[0])}
                         />
                         <Button type='submit' label='Submit' />
                         { loading &&

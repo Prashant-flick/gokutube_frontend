@@ -1,15 +1,13 @@
-import React,{useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import { FeedSingleVideo, PlaylistFeed } from '../index.js'
-import { FetchAllVidoes, fetchVideoById } from '../../FetchfromBackend/index.js'
+import { FetchAllVidoes } from '../../FetchfromBackend/index.js'
 import { useParams, useLocation } from 'react-router-dom'
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector, useDispatch } from 'react-redux';
 import { setdata } from '../../store/videoSlice.js'
 
-
 function VideoPageFeedVideo() {
   const {id} = useParams()
-  console.log(id);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -23,18 +21,18 @@ function VideoPageFeedVideo() {
   const dispatch = useDispatch()
 
   let playlist = useSelector(state => state.playlistReducer.PlaylistData);
-  if(playlist){
+  if(playlist.length>0 && playlistindex){
     playlist = playlist[playlistindex]
   }
 
   useEffect(() => {
-    ;(async()=>{
+    (async()=>{
       const data = await FetchAllVidoes({limit})
-      setVideos((prev) => prev=data.videos)
-      setlength((prev) => prev=data.length)
+      setVideos(data.videos)
+      setlength(data.length)
       dispatch(setdata(data))
     })()
-  },[id])
+  },[dispatch, id, limit])
 
   const fetchMoreData = () => {
     if(limit-10>length){
@@ -45,7 +43,7 @@ function VideoPageFeedVideo() {
       setlimit(prev => prev+10)
       const newlimit = limit+10
       const data = await FetchAllVidoes({limit:newlimit})
-      setVideos(prev => prev=data.videos)
+      setVideos(data.videos)
       dispatch(setdata(data))
     }, 500);    
   }
@@ -66,24 +64,17 @@ function VideoPageFeedVideo() {
           </div>
         
           <div className='h-[70vh] w-full overflow-y-scroll overflow-hidden'>
-            {/* <InfiniteScroll
-            dataLength={limit}
-            next={fetchMoreData}
-            hasMore={hasMore}
-            loader={<h4>Loading...</h4>}
-            > */}
-              {playlist.videos.map((data, index) => {            
+              {playlist.videos.map((data, index) => {   
                 return(
                   <div 
                     key={index}
                     className='w-full'
                   >
                     {   
-                      <PlaylistFeed videoid={data} isplaying={data==id} playlistid={playlist?._id}/>
+                      <PlaylistFeed videoid={data} isplaying={data===id} playlistid={playlist?._id}/>
                     }
                   </div>
               )})}
-            {/* </InfiniteScroll> */}
             </div>
           </div>
         </div>

@@ -27,6 +27,7 @@ import PlaylistVideo from './Channel/PlaylistVideo.jsx'
 import SubscribedChannelDetails from './Channel/SubscribedChannelDetails.jsx'
 import Subscribedfeed from './Subscribedfeed.jsx'
 import HistoryFeedVideo from './HistoryFeedVideo.jsx'
+import Loader from './Loader.jsx'
 
 export {
     Header,
@@ -58,6 +59,5 @@ export {
     SubscribedChannelDetails,
     Subscribedfeed,
     HistoryFeedVideo,
-    
-
+    Loader,
 }

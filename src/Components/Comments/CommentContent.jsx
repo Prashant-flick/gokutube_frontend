@@ -1,7 +1,7 @@
-import React,{useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FetchComment } from '../../FetchfromBackend/index.js'
-import { CommentData } from '../index.js'
+import { CommentData, Loader } from '../index.js'
 import InfiniteScroll from "react-infinite-scroll-component";
 import { setCommentData } from '../../store/commentSlice.js'
 
@@ -13,15 +13,19 @@ function CommentContent({
   const dispatch = useDispatch()
   const [limit, setlimit] = useState(10)
   const [hasMore, sethasMore] = useState(true)
+  const [loader, setloader] = useState(true);
 
   useEffect(() => {
     if(videoId){
-      ;(async()=>{
+      (async()=>{
         const data = await FetchComment({videoId,limit})
         dispatch(setCommentData(data))
+        if(data){
+          setloader(false)
+        }
       })()
     }
-  },[])
+  },[dispatch, limit, videoId])
 
   const fetchMoreData = () => {
     if(limit-10>length){
@@ -34,6 +38,10 @@ function CommentContent({
       const data = await FetchComment({videoId,limit:newlimit})
       dispatch(setCommentData(data))
     }, 500);    
+  }
+
+  if(loader){
+    return <Loader />
   }
 
   return (  

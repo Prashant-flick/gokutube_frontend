@@ -1,5 +1,4 @@
-import React,{useState, useEffect} from 'react'
-import { FetchComment } from '../../FetchfromBackend/index.js'
+import {useState} from 'react'
 import { CommentContent, UserAvatar, Button } from '../index.js'
 import axios from '../../api/axios.js'
 import { addComment as addcommentslice } from '../../store/commentSlice.js'
@@ -18,10 +17,10 @@ function GetVideoComments({
     e.preventDefault()
   
     if(e.target.name === 'input'){
-      setShow((prev) => prev=true)
+      setShow(true)
     }else if(e.target.name === 'button'){
-      setShow((prev) => prev=false)
-      setComment(prev => prev='')
+      setShow(false)
+      setComment('')
     }
   }
 
@@ -31,7 +30,7 @@ function GetVideoComments({
     const data2 = data.data.data
     Object.assign(data2, {ownerUsername: currentUser.username, ownerAvatar: currentUser.avatar, Likes: 0, likebyme: false})
     dispatch(addcommentslice(data2))
-    setComment(prev => prev='')
+    setComment('')
   }
 
   return (

@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { FetchCurrentUser } from '../FetchfromBackend'
-import { HistoryFeedVideo } from '../Components'
+import { HistoryFeedVideo, Loader } from '../Components'
 
 function History() {
   const [userHistory, setUserHistory] = useState([])
   const user = useSelector(state => state.authReducer.userData)
+  const [loading, setloading] = useState(true)
 
   useEffect(() => {
-    ;(async() => {
+    (async() => {
       const data = await FetchCurrentUser()
       setUserHistory(data?.watchHistory)
-      console.log('user history', data?.watchHistory);
+      if(data){
+        setloading(false)
+      }
     })()
   },[user])
 
-  console.log('here but not there', userHistory);
+  if(loading){
+    return (
+      <Loader />
+    )
+  }
 
   return (
     <div className='h-full w-full min-h-[90vh] px-36 py-8'>

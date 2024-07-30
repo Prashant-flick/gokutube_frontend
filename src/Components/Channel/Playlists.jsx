@@ -1,9 +1,9 @@
-import React,{useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import { useParams} from 'react-router-dom'
 import { FetchUserPlaylist } from '../../FetchfromBackend/FetchPlaylist'
 import { setplaylist as setplaylistdata } from '../../store/playlistSlice'
 import { useDispatch } from 'react-redux'
-import { PlaylistVideo } from '../index.js'
+import { Loader, PlaylistVideo } from '../index.js'
 
 function Playlists() {
   const [playlists, setPlaylists] = useState([])
@@ -13,42 +13,36 @@ function Playlists() {
 
   useEffect(() => {
     if(id){
-      ;(async () => {
+      (async () => {
         const data = await FetchUserPlaylist(id)
 
         if(data){
           setPlaylists(data)
           dispatch(setplaylistdata(data))
+          setloader(false)
         }
       })()
     }
-
-    setTimeout(() => {
-      setloader(false)
-    }, 1000);
-  },[id])
+  },[dispatch, id])
   
+  if(loader){
+    return <Loader />
+  }
 
   return (
     <div className={`${playlists.length ? 'grid grid-cols-3 gap-4 px-5 pt-4 h-full min-h-[51vh] w-full mt-4' : 'flex justify-center items-center w-full h-[53vh]'}`}>
       {
-        !loader &&
-        <>
-        {
-          playlists.length>0 && playlists.map((playlist, index) => {
-            return (
-              <div
-                key={index}
-                className='flex flex-col relative h-full w-full rounded-lg justify-center items-center'
-              >
-                <PlaylistVideo playlist={playlist} index={index}/>
-              </div>
-            )
-          })
-        }
-        </>
+        playlists.length>0 && playlists.map((playlist, index) => {
+          return (
+            <div
+              key={index}
+              className='flex flex-col relative h-full w-full rounded-lg justify-center items-center'
+            >
+              <PlaylistVideo playlist={playlist} index={index}/>
+            </div>
+          )
+        })
       }
-      
     </div>
   )
 }

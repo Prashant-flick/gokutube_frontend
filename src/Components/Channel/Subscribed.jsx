@@ -1,8 +1,8 @@
-import React,{useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import axios from '../../api/axios.js'
 import { useParams } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { SubscribedChannelDetails } from '../index.js'
+import { Loader, SubscribedChannelDetails } from '../index.js'
 
 function Subscribed() {
   const [subscribed, setsubscribed] = useState([])
@@ -13,19 +13,22 @@ function Subscribed() {
 
 
   useEffect(() => {
-    ;(async() => {
+    (async() => {
       const data = await axios.get(`/api/v1/subscription/get-subscribed-to/${id}?limit=${limit}`)
       setsubscribed(data.data.data)
+      if(data){
+        setloader(false);
+      }
     })()
-
-    setTimeout(() => {
-      setloader(false)
-    }, 700);
-  },[id])
+  },[id, limit])
 
 
   const fetchMoreData = async() => {
 
+  }
+
+  if(loader){
+    return <Loader />
   }
 
   return (
@@ -37,22 +40,17 @@ function Subscribed() {
           hasMore={hasMore}
           loader={<h4>Loading...</h4>}
         >
-          { 
-            !loader &&
-            <>
-            {
-              subscribed.length ?
-              subscribed.map((item, index) => {
-                return (
-                    <div key={index} className='h-full w-full py-4 hover:bg-gray-800 px-4 rounded-2xl'>
-                      <SubscribedChannelDetails id={item.channel}/>
-                    </div>
-                )
-              })
-              :
-              <h1 className='text-white'>No Subscriptions</h1>
-            }
-            </>
+          {
+            subscribed.length ?
+            subscribed.map((item, index) => {
+              return (
+                  <div key={index} className='h-full w-full py-4 hover:bg-gray-800 px-4 rounded-2xl'>
+                    <SubscribedChannelDetails id={item.channel}/>
+                  </div>
+              )
+            })
+            :
+            <h1 className='text-white'>No Subscriptions</h1>
           }
         </InfiniteScroll>
       </div>

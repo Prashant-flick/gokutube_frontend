@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
+import {  useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 function CustomVideoPlayer({
@@ -25,7 +25,7 @@ function CustomVideoPlayer({
   const [currsec, setcurrsec] = useState(0)
   const [currmin, setcurrmin] = useState(0)
   const [currhours, setcurrhours] = useState(0)
-  const [fullscreen, setfullscreen] = useState(false)
+  // const [fullscreen, setfullscreen] = useState(false)
   const [nextvideo, setnextvideo] = useState(false)
   const navigate = useNavigate()
 
@@ -73,9 +73,7 @@ function CustomVideoPlayer({
     setdurmin(Math.floor((vidRef.current.duration/60)%60))
     setdurhours(Math.floor(vidRef.current.duration/3600))
     setduration(Math.floor(vidRef.current.duration))
-  })
-
-  // console.log(video);
+  },[isplaylist, playlistVideos, allVideos, setduration, setdursec, setdurhours, setdurmin, setprevvideoindex, setnextvideoindex, vidRef, video._id])
 
   return (
       <div className={`h-full w-full relative`}>
@@ -100,8 +98,8 @@ function CustomVideoPlayer({
         { 
           ishovered &&
           <div 
-            onMouseEnter={(e) => setishovered(true)}
-            onMouseLeave={(e) => setishovered(false)}
+            onMouseEnter={() => setishovered(true)}
+            onMouseLeave={() => setishovered(false)}
 
             className='px-1 z-10 w-full items-center bg-gray-950 bg-opacity-10 flex flex-col absolute bottom-0'
           >
@@ -153,9 +151,6 @@ function CustomVideoPlayer({
                   onClick={(e) => {
                     e.preventDefault()
                     if(isplaylist){
-                      // console.log(playlistVideos[prevvideoindex]);
-                      // console.log(playlistVideos[nextvideoindex]);
-                      // console.log(video._id);
                       navigate(`/videos/${playlistVideos[prevvideoindex]}?playlist=true`)
                     }else{
                       navigate(`/videos/${allVideos[prevvideoindex]?._id}`)
@@ -268,7 +263,7 @@ function CustomVideoPlayer({
                     }}
                     className='text-white py-2 px-3'
                   >
-                    <span class="material-symbols-outlined">
+                    <span className="material-symbols-outlined">
                       fullscreen
                     </span>
                   </button>

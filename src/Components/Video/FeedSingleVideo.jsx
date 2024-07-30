@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 
 function FeedSingleVideo({
@@ -8,7 +8,7 @@ function FeedSingleVideo({
   const [hovered, sethovered] = useState(false)
 
   useEffect(() => {
-    setUser((prev) => video.user[0])
+    setUser(video.user[0])
   })
 
   const CalcTimeFromNow = () => {

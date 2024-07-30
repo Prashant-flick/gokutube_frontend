@@ -90,10 +90,10 @@ function FeedVideo({
     <div
       className='h-full w-full p-4 relative'
       onMouseEnter={() => {
-        setshowvideosettingicon(prev => true)
+        setshowvideosettingicon(true)
       }}
       onMouseLeave={() => {
-        setshowvideosettingicon(prev => false)
+        setshowvideosettingicon(false)
         setshowvideosetting(false)
         setShowVideo(false)
       }}
@@ -242,7 +242,8 @@ function FeedVideo({
                 playlists?.length>0 && !showcreateplaylist &&
                 playlists?.map((playlist, index) => {
                   return (
-                    <button 
+                    <button
+                      key={index} 
                       onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()

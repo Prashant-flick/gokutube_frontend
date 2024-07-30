@@ -1,9 +1,7 @@
-import React from 'react'
 import { Playlists } from '../../Components'
 
 function Playlist() {
-  window.addEventListener('popstate', function(event) {
-    // Your event handling code here
+  window.addEventListener('popstate', function() {
     window.location.reload()
   });
   return (

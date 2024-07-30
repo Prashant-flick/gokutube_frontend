@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchVideoById, fetchUserById } from '../../FetchfromBackend/index.js'
 import { Link } from 'react-router-dom'
 import axios from '../../api/axios.js'
 import { FetchUserPlaylist } from '../../FetchfromBackend/index.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { setplaylist } from '../../store/playlistSlice.js'
+import Loader from '../Loader.jsx'
 
 function PlaylistFeed({
     videoid=null,
     isplaying=false,
     playlistid=null
 }) {
+
   const [user, setUser] = useState(null)
   const [video, setvideo] = useState(null)
   const [hovered, sethovered] = useState(false)
@@ -18,17 +20,23 @@ function PlaylistFeed({
   const [showsetting, setshowsetting] = useState(false)
   const currentuser = useSelector(state => state.authReducer.userData)
   const dispatch = useDispatch()
+  const [loading, setloading] = useState(true)
 
   useEffect(() => {
-      ;(async()=>{
-        const data = await fetchVideoById(videoid)
-        setvideo(prev => data)
+      (async()=>{
+        const data = await fetchVideoById({id:videoid, isplaying:isplaying})
+        setvideo(data)
+        console.log(data);
         if(data){
           const userdata = await fetchUserById(data.owner)
-          setUser(prev => userdata)
+          setUser(userdata)
+          console.log(userdata);
+          if(userdata){
+            setloading(false)
+          }
         }
       })()
-  },[])
+  },[videoid, isplaying])
 
   const CalcTimeFromNow = () => {
     let date  = new Date()
@@ -75,6 +83,10 @@ function PlaylistFeed({
       dispatch(setplaylist(data2))
     }
   }
+
+  if(loading){
+    return <Loader />
+  }
   
   return (
     <>
@@ -99,7 +111,7 @@ function PlaylistFeed({
           />
           <Link to={`/videos/${video._id}`}>
             <video 
-            onMouseLeave={(e) => {
+            onMouseLeave={() => {
               sethovered(false)
             }}
             onClick={(e) => {
