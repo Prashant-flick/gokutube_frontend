@@ -25,10 +25,7 @@ const fetchUserVideo = async(userId) => {
 
 const fetchVideoById = async({id, isplaying=false}) => {
     try {
-        console.log(id);
-        console.log(isplaying);
         const response = await axios.get(`/api/v1/videos/get-video/${id}?isplaying=${isplaying}`)
-        console.log(response.data.data);
         return response?.data?.data
     } catch (error) {
         console.log(error);

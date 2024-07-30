@@ -1,6 +1,6 @@
-import React,{useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import { fetchVideoById, fetchUserById } from '../FetchfromBackend'
-import { Link } from 'react-router-dom';
+import Loader from './Loader'
 
 function HistoryFeedVideo({
     id=null
@@ -8,14 +8,16 @@ function HistoryFeedVideo({
     const [video, setVideo] = useState(null)
     const [user, setUser] = useState(null)
     const [hovered, sethovered] = useState(false)
+    const [loading, setloading] = useState(true);
   
     useEffect(() => {
-      ;(async() => {
+      (async() => {
         const data = await fetchVideoById({id, isplaying:false})
         setVideo(data)
         if(data){
           const userdata = await fetchUserById(data.owner)
           setUser(userdata)
+          setloading(false)
         }
       })()
     },[id])
@@ -56,6 +58,10 @@ function HistoryFeedVideo({
         }
         return `${date2[4].split(':')[1] - videoTime2[4].split(':')[1]} minutes ago`
       }
+    }
+
+    if(loading){
+      return <Loader />
     }
   
     return (
