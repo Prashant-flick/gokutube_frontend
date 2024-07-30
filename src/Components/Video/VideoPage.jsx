@@ -17,7 +17,7 @@ function VideoPage() {
   const [loading, setloading] = useState(true);
 
   useEffect(() => {
-    if(id){
+    if(id && !video){
       (async()=>{
         const data = await fetchVideoById({id, isplaying:true})
         setVideo(data)
@@ -39,7 +39,7 @@ function VideoPage() {
         }
       })()
     }
-  },[id])
+  },[id, video])
 
   const toggleSubscribe = async(e) => {
     e.preventDefault()

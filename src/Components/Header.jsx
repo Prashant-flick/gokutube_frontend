@@ -1,39 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {Logo, SearchBar, UserAvatar} from './index.js'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import axios  from '../api/axios.js'
 import { useNavigate } from 'react-router-dom'
-import {logout as authLogout} from '../store/authSlice.js'
 
 function Header() {
   const status = useSelector(state => state.authReducer.status)
   const user = useSelector(state => state.authReducer.userData)
   const [show, setShow] = useState(false)
-  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const toggle = (e) => {
     e.preventDefault()
     setShow((prev)=>!prev)
   }
-
-  useEffect(() => {
-    if(status){
-      (async() => {
-        try {
-          const data = await axios.get(`/api/v1/users/get-current-user`)
-        } catch (error) {
-          if(error.request.status === 401){
-            window.localStorage.clear()
-            dispatch(authLogout())
-            navigate('/login')
-          }
-        }
-      })()
-    }
-  },[])
 
   const logout = async(e) => {
     e.preventDefault()
@@ -65,6 +46,15 @@ function Header() {
                 show ?
                 <div onClick={(e) => toggle(e)} className='fixed left-0 top-0 h-[100vh] w-[100vw]'>
                   <div onClick={(e) => e.stopPropagation()} className='rounded-lg top-16 right-2 mt-2 fixed flex flex-col justify-center items-center w-36 bg-gray-600'>
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault()
+                        navigate(`/channel/${user?.username}`)
+                        setShow(false)
+                      }}
+                      className='h-10 text-white font-medium border-b w-full border-gray-900'>
+                      View Profile
+                    </button>
                     <button onClick={(e) => logout(e)} className='h-10 text-white font-medium border-b w-full border-gray-900'>
                       Sign Out
                     </button>

@@ -79,7 +79,7 @@ function MyVideos() {
         if(videoFile.size > 30000000 && thumbnail.size > 5000000){
           alert('video(max 40MB) and thumbnail(max 5mb) too large ')
         }else if(videoFile.size > 30000000){
-          alert('video(max 40MB) too large ')
+          alert('video(max 30MB) too large ')
         }else{
           alert('thumbnail(max 5mb) too large ')
         }

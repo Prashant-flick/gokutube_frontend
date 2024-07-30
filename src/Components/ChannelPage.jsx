@@ -15,7 +15,8 @@ function ChannelPage() {
   const [avatar, setavatar] = useState(null)
   const [coverImage, setcoverImage] = useState(null)
   const [fullName, setfullName] = useState('')
-  const [loading, setloading] = useState(true)
+  const [loading, setloading] = useState(false)
+  const [loading2, setloading2] = useState(false)
   const [mainloading, setmainloading] = useState(true);
 
   const location = useLocation();
@@ -214,16 +215,16 @@ function ChannelPage() {
                         />
                         <Button type='submit' label='Submit' />
                         { loading &&
-                        <ThreeDots
-                          visible={true}
-                          height="80"
-                          width="80"
-                          color="#4fa94d"
-                          radius="9"
-                          ariaLabel="three-dots-loading"
-                          wrapperStyle={{}}
-                          wrapperClass=""
-                        />
+                          <ThreeDots
+                            visible={true}
+                            height="80"
+                            width="80"
+                            color="#4fa94d"
+                            radius="9"
+                            ariaLabel="three-dots-loading"
+                            wrapperStyle={{}}
+                            wrapperClass=""
+                          />
                         }
                       </form>
                     </div>
